@@ -41,4 +41,35 @@ public class MoneyTest {
             new Money(null);
         });
     }
+
+    @Test
+    public void test_equal_instance() {
+        Money money = new Money(new BigDecimal(1));
+
+        Assertions.assertTrue(money.equals(money));
+    }
+
+    @Test
+    public void test_equal_value() {
+        Money money1 = new Money(new BigDecimal(1));
+        Money money2 = new Money(Integer.valueOf(1));
+
+        Assertions.assertTrue(money1.equals(money2));
+    }
+
+    @Test
+    public void test_not_equal_value() {
+        Money money1 = new Money(new BigDecimal(1));
+        Money money2 = new Money(new BigDecimal(-1));
+
+        Assertions.assertFalse(money1.equals(money2));
+    }
+
+    @Test
+    public void test_not_equal_instance() {
+        Money money1 = new Money(new BigDecimal(1));
+        Object money2 = new Object();
+
+        Assertions.assertFalse(money1.equals(money2));
+    }
 }

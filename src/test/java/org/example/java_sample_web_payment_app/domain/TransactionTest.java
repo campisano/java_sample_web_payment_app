@@ -11,6 +11,7 @@ public class TransactionTest {
 
         Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.CASH, transaction.getType());
+        Assertions.assertEquals(new Money(-100), transaction.getValue());
     }
 
     @Test
@@ -19,7 +20,7 @@ public class TransactionTest {
 
         Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.INSTALLMENT, transaction.getType());
-        Assertions.assertEquals("number", transaction.getNumber());
+        Assertions.assertEquals(new Money(-10), transaction.getValue());
     }
 
     @Test
@@ -28,6 +29,7 @@ public class TransactionTest {
 
         Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.WITHDRAWAL, transaction.getType());
+        Assertions.assertEquals(new Money(-100), transaction.getValue());
     }
 
     @Test
@@ -36,6 +38,7 @@ public class TransactionTest {
 
         Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.PAYMENT, transaction.getType());
+        Assertions.assertEquals(new Money(100), transaction.getValue());
     }
 
     @Test
