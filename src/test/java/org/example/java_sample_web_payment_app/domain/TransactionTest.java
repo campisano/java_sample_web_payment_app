@@ -7,22 +7,30 @@ public class TransactionTest {
 
     @Test
     public void test_creation() {
-        Transaction transaction = new Transaction("number");
+        Transaction transaction = new Transaction("number", Transaction.Type.CASH);
 
         Assertions.assertEquals("number", transaction.getNumber());
-    }
-
-    @Test
-    public void test_creation_empty_number() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction("");
-        });
+        Assertions.assertEquals(Transaction.Type.CASH, transaction.getType());
     }
 
     @Test
     public void test_creation_null_number() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(null);
+            new Transaction(null, Transaction.Type.CASH);
+        });
+    }
+
+    @Test
+    public void test_creation_empty_number() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new Transaction("", Transaction.Type.CASH);
+        });
+    }
+
+    @Test
+    public void test_creation_null_type() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new Transaction("number", null);
         });
     }
 }
