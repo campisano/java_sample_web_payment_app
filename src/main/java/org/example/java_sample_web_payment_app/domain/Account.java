@@ -17,7 +17,7 @@ public class Account {
     private static void ensureCreable(String documentNumber) {
         if (documentNumber == null || documentNumber.length() == 0) {
             throw new IllegalArgumentException(
-                    MessageFormat.format("Document number '{0}' is invalid", documentNumber));
+                    MessageFormat.format("Document number [{0}] is invalid", documentNumber));
         }
     }
 }

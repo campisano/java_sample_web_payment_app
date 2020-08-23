@@ -42,7 +42,7 @@ public class Transaction {
             throw new IllegalArgumentException("Account 'null' is invalid");
         }
         if (number == null || number.length() == 0) {
-            throw new IllegalArgumentException(MessageFormat.format("Number '{0}' is invalid", number));
+            throw new IllegalArgumentException(MessageFormat.format("Number [{0}] is invalid", number));
         }
         if (type == null) {
             throw new IllegalArgumentException("Type 'null' is invalid");
