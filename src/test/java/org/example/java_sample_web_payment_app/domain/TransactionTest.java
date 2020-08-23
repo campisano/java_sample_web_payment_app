@@ -10,7 +10,7 @@ public class TransactionTest {
         Transaction transaction = new Transaction(new Account("document_number"), "number", Transaction.Type.CASH,
                 new Money(-100));
 
-        Assertions.assertEquals("document_number", transaction.getAccount().getNumber());
+        Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
         Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.CASH, transaction.getType());
         Assertions.assertEquals(new Money(-100), transaction.getValue());
@@ -21,7 +21,7 @@ public class TransactionTest {
         Transaction transaction = new Transaction(new Account("document_number"), "number",
                 Transaction.Type.INSTALLMENT, new Money(-10));
 
-        Assertions.assertEquals("document_number", transaction.getAccount().getNumber());
+        Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
         Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.INSTALLMENT, transaction.getType());
         Assertions.assertEquals(new Money(-10), transaction.getValue());
@@ -32,7 +32,7 @@ public class TransactionTest {
         Transaction transaction = new Transaction(new Account("document_number"), "number", Transaction.Type.WITHDRAWAL,
                 new Money(-100));
 
-        Assertions.assertEquals("document_number", transaction.getAccount().getNumber());
+        Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
         Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.WITHDRAWAL, transaction.getType());
         Assertions.assertEquals(new Money(-100), transaction.getValue());
@@ -43,7 +43,7 @@ public class TransactionTest {
         Transaction transaction = new Transaction(new Account("document_number"), "number", Transaction.Type.PAYMENT,
                 new Money(100));
 
-        Assertions.assertEquals("document_number", transaction.getAccount().getNumber());
+        Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
         Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.PAYMENT, transaction.getType());
         Assertions.assertEquals(new Money(100), transaction.getValue());

@@ -7,20 +7,20 @@ public class AccountTest {
 
     @Test
     public void test_creation() {
-        Account account = new Account("number");
+        Account account = new Account("document_number");
 
-        Assertions.assertEquals("number", account.getNumber());
+        Assertions.assertEquals("document_number", account.getDocumentNumber());
     }
 
     @Test
-    public void test_creation_empty_number() {
+    public void test_creation_empty_document_number() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Account("");
         });
     }
 
     @Test
-    public void test_creation_null_number() {
+    public void test_creation_null_document_number() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Account(null);
         });

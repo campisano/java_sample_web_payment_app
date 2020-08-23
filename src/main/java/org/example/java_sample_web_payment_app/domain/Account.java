@@ -3,20 +3,21 @@ package org.example.java_sample_web_payment_app.domain;
 import java.text.MessageFormat;
 
 public class Account {
-    private String number;
+    private String documentNumber;
 
-    public Account(String number) {
-        ensureCreable(number);
-        this.number = number;
+    public Account(String documentNumber) {
+        ensureCreable(documentNumber);
+        this.documentNumber = documentNumber;
     }
 
-    public String getNumber() {
-        return number;
+    public String getDocumentNumber() {
+        return documentNumber;
     }
 
-    private static void ensureCreable(String number) {
-        if (number == null || number.length() == 0) {
-            throw new IllegalArgumentException(MessageFormat.format("Number {0} is invalid", number));
+    private static void ensureCreable(String documentNumber) {
+        if (documentNumber == null || documentNumber.length() == 0) {
+            throw new IllegalArgumentException(
+                    MessageFormat.format("Document number '{0}' is invalid", documentNumber));
         }
     }
 }
