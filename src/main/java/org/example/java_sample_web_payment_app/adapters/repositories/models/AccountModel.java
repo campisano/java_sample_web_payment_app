@@ -10,9 +10,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "accounts")
 public class AccountModel {
+    public final static String ID_SEQ_NAME = "accounts_id_seq";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ_NAME)
     private long id;
 
     @Column(nullable = false, unique = true)
@@ -21,7 +22,8 @@ public class AccountModel {
     AccountModel() {
     }
 
-    public AccountModel(String documentNumber) {
+    public AccountModel(Long id, String documentNumber) {
+        this.id = id;
         this.documentNumber = documentNumber;
     }
 
