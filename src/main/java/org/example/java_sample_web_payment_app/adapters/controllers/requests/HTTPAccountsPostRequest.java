@@ -1,4 +1,4 @@
-package org.example.java_sample_web_payment_app.adapters.requests;
+package org.example.java_sample_web_payment_app.adapters.controllers.requests;
 
 public class HTTPAccountsPostRequest {
     public String document_number;

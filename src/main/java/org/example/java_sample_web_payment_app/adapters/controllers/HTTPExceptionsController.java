@@ -1,4 +1,4 @@
-package org.example.java_sample_web_payment_app.adapters;
+package org.example.java_sample_web_payment_app.adapters.controllers;
 
 import java.util.Objects;
 
