@@ -1,0 +1,13 @@
+version: '2'
+
+services:
+  postgres:
+    container_name: java_sample_web_payment_app-postgres
+    image: postgres:12.4-alpine
+    hostname: java_sample_web_payment_app-postgres
+    ports:
+    - 5432:5432
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_DB=javasamplewebpaymentappdbdb
