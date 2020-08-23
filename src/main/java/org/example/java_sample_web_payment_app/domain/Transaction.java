@@ -8,15 +8,21 @@ public class Transaction {
         CASH, INSTALLMENT, WITHDRAWAL, PAYMENT
     };
 
+    private Account account;
     private String number;
     private Type type;
     private Money value;
 
-    public Transaction(String number, Type type, Money value) {
-        ensureCreable(number, type, value);
+    public Transaction(Account account, String number, Type type, Money value) {
+        ensureCreable(account, number, type, value);
+        this.account = account;
         this.number = number;
         this.type = type;
         this.value = value;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     public String getNumber() {
@@ -31,7 +37,10 @@ public class Transaction {
         return value;
     }
 
-    private static void ensureCreable(String number, Type type, Money value) {
+    private static void ensureCreable(Account account, String number, Type type, Money value) {
+        if (account == null) {
+            throw new IllegalArgumentException("Account 'null' is invalid");
+        }
         if (number == null || number.length() == 0) {
             throw new IllegalArgumentException(MessageFormat.format("Number '{0}' is invalid", number));
         }
