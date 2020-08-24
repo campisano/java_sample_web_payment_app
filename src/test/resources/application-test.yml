@@ -1,47 +1,11 @@
-# spring:
-#   datasource:
-#     driverClassName: org.postgresql.Driver
-#     url: jdbc:postgresql://localhost:5432/javasamplewebpaymentappdbdb
-#     username: postgres
-#     password: postgres
-#     
-#   jpa:
-#     hibernate:
-#       ddl-auto: create
-#     properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${TESTCONTAINER_PG_URL}
+    username: ${TESTCONTAINER_PG_USERNAME}
+    password: ${TESTCONTAINER_PG_PASSWORD}
 
-# spring:
-#   datasource:
-#     driverClassName: org.h2.Driver
-#     url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_ON_EXIT=TRUE
-#     username: sa
-#     password: ""
-#     
-#   jpa:
-#     hibernate:
-#       ddl-auto: create
-#     properties.hibernate.dialect: org.hibernate.dialect.H2Dialect
-
-# spring:
-#   datasource:
-#     driverClassName: org.hsqldb.jdbc.JDBCDriver
-#     url: jdbc:hsqldb:mem:testdb;sql.syntax_pgs=true;DB_CLOSE_DELAY=-1
-#     username: sa
-#     password: ""
-#     
-#   jpa:
-#     hibernate:
-#       ddl-auto: create
-#     properties.hibernate.dialect: org.hibernate.dialect.HSQLDialect
-
-# spring:
-#   datasource:
-#     driverClassName: org.apache.derby.jdbc.EmbeddedDriver
-#     url: jdbc:derby:memory:testdb;create=true
-#     username: sa
-#     password: sa
-# 
-#   jpa:
-#     hibernate:
-#       ddl-auto: create
-#     properties.hibernate.dialect: org.hibernate.dialect.HSQLDialect
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect

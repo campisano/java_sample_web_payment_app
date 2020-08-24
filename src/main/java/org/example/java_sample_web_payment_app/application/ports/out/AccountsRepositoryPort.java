@@ -1,5 +1,7 @@
 package org.example.java_sample_web_payment_app.application.ports.out;
 
+import java.util.Optional;
+
 import org.example.java_sample_web_payment_app.application.dtos.AccountDTO;
 
 public interface AccountsRepositoryPort {
@@ -9,4 +11,6 @@ public interface AccountsRepositoryPort {
     Long generateUniqueAccountId();
 
     void add(AccountDTO account);
+
+    Optional<AccountDTO> findByAccountId(Long accountId);
 }
