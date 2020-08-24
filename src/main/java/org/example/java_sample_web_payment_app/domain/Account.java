@@ -21,7 +21,7 @@ public class Account {
     }
 
     private static void ensureCreable(Long accountId, String documentNumber) {
-        if (accountId == null || accountId <= 0) {
+        if (accountId == null) {
             throw new IllegalArgumentException(MessageFormat.format("Account id [{0}] is invalid", accountId));
         }
 

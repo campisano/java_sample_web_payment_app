@@ -7,88 +7,82 @@ public class TransactionTest {
 
     @Test
     public void test_creation_cash() {
-        Transaction transaction = new Transaction(new Account(Long.valueOf(1), "document_number"), "number",
+        Transaction transaction = new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                 Transaction.Type.CASH, new Money(-100));
 
+        Assertions.assertEquals(Long.valueOf(1), transaction.getTransactionId());
         Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
-        Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.CASH, transaction.getType());
         Assertions.assertEquals(new Money(-100), transaction.getValue());
     }
 
     @Test
     public void test_creation_installment() {
-        Transaction transaction = new Transaction(new Account(Long.valueOf(1), "document_number"), "number",
+        Transaction transaction = new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                 Transaction.Type.INSTALLMENT, new Money(-10));
 
+        Assertions.assertEquals(Long.valueOf(1), transaction.getTransactionId());
         Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
-        Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.INSTALLMENT, transaction.getType());
         Assertions.assertEquals(new Money(-10), transaction.getValue());
     }
 
     @Test
     public void test_creation_installment_withdrawal() {
-        Transaction transaction = new Transaction(new Account(Long.valueOf(1), "document_number"), "number",
+        Transaction transaction = new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                 Transaction.Type.WITHDRAWAL, new Money(-100));
 
+        Assertions.assertEquals(Long.valueOf(1), transaction.getTransactionId());
         Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
-        Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.WITHDRAWAL, transaction.getType());
         Assertions.assertEquals(new Money(-100), transaction.getValue());
     }
 
     @Test
     public void test_creation_installment_payment() {
-        Transaction transaction = new Transaction(new Account(Long.valueOf(1), "document_number"), "number",
+        Transaction transaction = new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                 Transaction.Type.PAYMENT, new Money(100));
 
+        Assertions.assertEquals(Long.valueOf(1), transaction.getTransactionId());
         Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
-        Assertions.assertEquals("number", transaction.getNumber());
         Assertions.assertEquals(Transaction.Type.PAYMENT, transaction.getType());
         Assertions.assertEquals(new Money(100), transaction.getValue());
     }
 
     @Test
-    public void test_creation_null_account() {
+    public void test_creation_null_transaction_id() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(null, "number", Transaction.Type.CASH, new Money(-1));
-        });
-    }
-
-    @Test
-    public void test_creation_null_number() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(new Account(Long.valueOf(1), "document_number"), null, Transaction.Type.CASH,
+            new Transaction(null, new Account(Long.valueOf(1), "document_number"), Transaction.Type.CASH,
                     new Money(-1));
         });
     }
 
     @Test
-    public void test_creation_empty_number() {
+    public void test_creation_null_account() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(new Account(Long.valueOf(1), "document_number"), "", Transaction.Type.CASH, new Money(-1));
+            new Transaction(Long.valueOf(1), null, Transaction.Type.CASH, new Money(-1));
         });
     }
 
     @Test
     public void test_creation_null_type() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(new Account(Long.valueOf(1), "document_number"), "number", null, new Money(-1));
+            new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), null, new Money(-1));
         });
     }
 
     @Test
     public void test_creation_null_value() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(new Account(Long.valueOf(1), "document_number"), "number", Transaction.Type.CASH, null);
+            new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), Transaction.Type.CASH,
+                    null);
         });
     }
 
     @Test
     public void test_creation_cash_positive() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(new Account(Long.valueOf(1), "document_number"), "number", Transaction.Type.CASH,
+            new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), Transaction.Type.CASH,
                     new Money(1));
         });
     }
@@ -96,23 +90,23 @@ public class TransactionTest {
     @Test
     public void test_creation_installment_positive() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(new Account(Long.valueOf(1), "document_number"), "number", Transaction.Type.INSTALLMENT,
-                    new Money(1));
+            new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
+                    Transaction.Type.INSTALLMENT, new Money(1));
         });
     }
 
     @Test
     public void test_creation_withdrawal_positive() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(new Account(Long.valueOf(1), "document_number"), "number", Transaction.Type.WITHDRAWAL,
-                    new Money(1));
+            new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
+                    Transaction.Type.WITHDRAWAL, new Money(1));
         });
     }
 
     @Test
     public void test_creation_payment_negative() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Transaction(new Account(Long.valueOf(1), "document_number"), "number", Transaction.Type.PAYMENT,
+            new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), Transaction.Type.PAYMENT,
                     new Money(-1));
         });
     }

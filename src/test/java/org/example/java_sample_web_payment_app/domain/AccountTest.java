@@ -14,13 +14,6 @@ public class AccountTest {
     }
 
     @Test
-    public void test_creation_zero_account_id() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new Account(Long.valueOf(0), "document_number");
-        });
-    }
-
-    @Test
     public void test_creation_null_account_id() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Account(null, "document_number");
