@@ -13,7 +13,7 @@ public class TransactionTest {
         Assertions.assertEquals(Long.valueOf(1), transaction.getTransactionId());
         Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
         Assertions.assertEquals(Transaction.Type.CASH, transaction.getType());
-        Assertions.assertEquals(new Money(-100), transaction.getValue());
+        Assertions.assertEquals(new Money(-100), transaction.getAmount());
     }
 
     @Test
@@ -24,7 +24,7 @@ public class TransactionTest {
         Assertions.assertEquals(Long.valueOf(1), transaction.getTransactionId());
         Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
         Assertions.assertEquals(Transaction.Type.INSTALLMENT, transaction.getType());
-        Assertions.assertEquals(new Money(-10), transaction.getValue());
+        Assertions.assertEquals(new Money(-10), transaction.getAmount());
     }
 
     @Test
@@ -35,7 +35,7 @@ public class TransactionTest {
         Assertions.assertEquals(Long.valueOf(1), transaction.getTransactionId());
         Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
         Assertions.assertEquals(Transaction.Type.WITHDRAWAL, transaction.getType());
-        Assertions.assertEquals(new Money(-100), transaction.getValue());
+        Assertions.assertEquals(new Money(-100), transaction.getAmount());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class TransactionTest {
         Assertions.assertEquals(Long.valueOf(1), transaction.getTransactionId());
         Assertions.assertEquals("document_number", transaction.getAccount().getDocumentNumber());
         Assertions.assertEquals(Transaction.Type.PAYMENT, transaction.getType());
-        Assertions.assertEquals(new Money(100), transaction.getValue());
+        Assertions.assertEquals(new Money(100), transaction.getAmount());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class TransactionTest {
     }
 
     @Test
-    public void test_creation_null_value() {
+    public void test_creation_null_amount() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), Transaction.Type.CASH,
                     null);

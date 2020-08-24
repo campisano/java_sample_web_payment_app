@@ -11,14 +11,14 @@ public class Transaction {
     private Long transactionId;
     private Account account;
     private Type type;
-    private Money value;
+    private Money amount;
 
-    public Transaction(Long transactionId, Account account, Type type, Money value) {
-        ensureCreable(transactionId, account, type, value);
+    public Transaction(Long transactionId, Account account, Type type, Money amount) {
+        ensureCreable(transactionId, account, type, amount);
         this.transactionId = transactionId;
         this.account = account;
         this.type = type;
-        this.value = value;
+        this.amount = amount;
     }
 
     public Long getTransactionId() {
@@ -33,11 +33,11 @@ public class Transaction {
         return type;
     }
 
-    public Money getValue() {
-        return value;
+    public Money getAmount() {
+        return amount;
     }
 
-    private static void ensureCreable(Long transactionId, Account account, Type type, Money value) {
+    private static void ensureCreable(Long transactionId, Account account, Type type, Money amount) {
         if (transactionId == null) {
             throw new IllegalArgumentException(MessageFormat.format("Transaction id [{0}] is invalid", transactionId));
         }
@@ -47,17 +47,17 @@ public class Transaction {
         if (type == null) {
             throw new IllegalArgumentException("Type 'null' is invalid");
         }
-        if (value == null) {
-            throw new IllegalArgumentException("Value 'null' is invalid");
+        if (amount == null) {
+            throw new IllegalArgumentException("Amount 'null' is invalid");
         }
 
         if (type.equals(Type.PAYMENT)) {
-            if (value.isNegative()) {
-                throw new IllegalArgumentException("Payment transaction must have a positive value");
+            if (amount.isNegative()) {
+                throw new IllegalArgumentException("Payment transaction must have a positive amount");
             }
         } else {
-            if (value.isPositive()) {
-                throw new IllegalArgumentException("Only Payment transaction can have a positive value");
+            if (amount.isPositive()) {
+                throw new IllegalArgumentException("Only Payment transaction can have a positive amount");
             }
         }
     }
