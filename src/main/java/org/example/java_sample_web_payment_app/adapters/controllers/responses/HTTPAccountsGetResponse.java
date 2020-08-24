@@ -10,6 +10,6 @@ public class HTTPAccountsGetResponse {
 
     @Override
     public String toString() {
-        return getClass().getName() + " [account_id=" + accountId + ", document_number=" + documentNumber + "]";
+        return getClass().getName() + " [accountId=" + accountId + ", documentNumber=" + documentNumber + "]";
     }
 }

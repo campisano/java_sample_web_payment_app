@@ -9,6 +9,6 @@ public class HTTPAccountsPostRequest {
 
     @Override
     public String toString() {
-        return getClass().getName() + " [document_number=" + documentNumber + "]";
+        return getClass().getName() + " [documentNumber=" + documentNumber + "]";
     }
 }
