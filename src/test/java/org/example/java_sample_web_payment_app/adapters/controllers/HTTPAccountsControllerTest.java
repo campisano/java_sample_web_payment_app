@@ -18,7 +18,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class HTTPAccountAdapterTest {
+public class HTTPAccountsControllerTest {
 
     @Test
     public void test_post() throws Exception {
@@ -57,13 +57,6 @@ public class HTTPAccountAdapterTest {
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         Mockito.verify(usecase, Mockito.times(0)).execute(Mockito.any());
         Mockito.verifyNoMoreInteractions(usecase);
-    }
-
-    private HttpServletRequest mockRequest() {
-        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(request.getMethod()).thenReturn(HttpMethod.POST.name());
-        Mockito.when(request.getRequestURI()).thenReturn("/authors");
-        return request;
     }
 
     @Test
@@ -107,5 +100,12 @@ public class HTTPAccountAdapterTest {
         Assertions.assertFalse(response.hasBody());
         Mockito.verify(usecase, Mockito.times(0)).execute(Mockito.any());
         Mockito.verifyNoMoreInteractions(usecase);
+    }
+
+    private HttpServletRequest mockRequest() {
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(request.getMethod()).thenReturn(HttpMethod.POST.name());
+        Mockito.when(request.getRequestURI()).thenReturn("/authors");
+        return request;
     }
 }
