@@ -21,15 +21,12 @@ public class CreateAccountUsecase implements CreateAccountUsecasePort {
             throw new AccountAlreadyExistsException(documentNumber);
         }
 
-        Long id = accountsRepository.generateUniqueAccountId();
-        Account account = new Account(id, documentNumber);
+        Long accountId = accountsRepository.generateUniqueAccountId();
+        new Account(accountId, documentNumber);
 
-        AccountDTO dto = new AccountDTO() {
-            {
-                accountId = account.getAccountId();
-                documentNumber = account.getDocumentNumber();
-            }
-        };
+        AccountDTO dto = new AccountDTO();
+        dto.accountId = accountId;
+        dto.documentNumber = documentNumber;
 
         accountsRepository.add(dto);
     }
