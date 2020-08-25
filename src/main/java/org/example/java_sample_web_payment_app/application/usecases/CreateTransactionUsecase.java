@@ -11,6 +11,7 @@ import org.example.java_sample_web_payment_app.application.ports.in.CreateTransa
 import org.example.java_sample_web_payment_app.application.ports.out.AccountsRepositoryPort;
 import org.example.java_sample_web_payment_app.application.ports.out.TransactionsRepositoryPort;
 import org.example.java_sample_web_payment_app.domain.Account;
+import org.example.java_sample_web_payment_app.domain.DomainValidationException;
 import org.example.java_sample_web_payment_app.domain.Money;
 import org.example.java_sample_web_payment_app.domain.Transaction;
 
@@ -27,7 +28,7 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
 
     @Override
     public void execute(Long accountId, Long operationTypeId, BigDecimal amount)
-            throws AccountIdNotExistsException, OperationTypeIdNotExistsException {
+            throws DomainValidationException, AccountIdNotExistsException, OperationTypeIdNotExistsException {
 
         Optional<AccountDTO> account = accountsRepository.findByAccountId(accountId);
 

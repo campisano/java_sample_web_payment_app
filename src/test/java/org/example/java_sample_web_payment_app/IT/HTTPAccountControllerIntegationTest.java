@@ -35,8 +35,12 @@ public class HTTPAccountControllerIntegationTest {
     private TestRestTemplate rest;
 
     @Test
-    public void test_post() {
-        HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {{ documentNumber = "12345678900"; }};
+    public void test_post() throws Exception {
+        HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {
+            {
+                documentNumber = "12345678900";
+            }
+        };
 
         ResponseEntity<?> response = rest.postForEntity("/accounts", body, null);
 
@@ -44,31 +48,39 @@ public class HTTPAccountControllerIntegationTest {
     }
 
     @Test
-    public void test_post_exists() {
-        HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {{ documentNumber = "12345678900"; }};
+    public void test_post_exists() throws Exception {
+        HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {
+            {
+                documentNumber = "12345678900";
+            }
+        };
         ResponseEntity<?> response1 = rest.postForEntity("/accounts", body, null);
         Assertions.assertEquals(HttpStatus.CREATED, response1.getStatusCode());
 
         ResponseEntity<?> response2 = rest.postForEntity("/accounts", body, null);
 
-        Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response2.getStatusCode());
+        Assertions.assertEquals(HttpStatus.CONFLICT, response2.getStatusCode());
     }
 
     @Test
-    public void test_post_empty() {
+    public void test_post_empty() throws Exception {
         ResponseEntity<?> response = rest.postForEntity("/accounts", Optional.empty(), null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
-    public void test_get() {
+    public void test_get() throws Exception {
         Long existingAccountId = Long.valueOf(1);
         String existingDocumentNumber = "12345678900";
-        rest.postForEntity("/accounts", new HTTPAccountsPostRequest() {{ documentNumber = existingDocumentNumber; }}, null);
+        rest.postForEntity("/accounts", new HTTPAccountsPostRequest() {
+            {
+                documentNumber = existingDocumentNumber;
+            }
+        }, null);
 
-        ResponseEntity<HTTPAccountsGetResponse> response = rest
-                .getForEntity("/accounts/{accountId}", HTTPAccountsGetResponse.class, existingAccountId);
+        ResponseEntity<HTTPAccountsGetResponse> response = rest.getForEntity("/accounts/{accountId}",
+                HTTPAccountsGetResponse.class, existingAccountId);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(existingAccountId, response.getBody().accountId);
@@ -76,7 +88,7 @@ public class HTTPAccountControllerIntegationTest {
     }
 
     @Test
-    public void test_get_not_exists() {
+    public void test_get_not_exists() throws Exception {
         Long existingAccountId = Long.valueOf(1);
 
         ResponseEntity<HTTPAccountsGetResponse> response = rest.getForEntity("/accounts/{accountId}",

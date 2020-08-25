@@ -7,11 +7,11 @@ public class Money {
 
     private BigDecimal value;
 
-    public Money(BigDecimal value) {
+    public Money(BigDecimal value) throws DomainValidationException {
         construct(value);
     }
 
-    public Money(int value) {
+    public Money(int value) throws DomainValidationException {
         BigDecimal bd = new BigDecimal(value);
         construct(bd);
     }
@@ -28,17 +28,17 @@ public class Money {
         return !isPositive();
     }
 
-    private void construct(BigDecimal value) {
+    private void construct(BigDecimal value) throws DomainValidationException {
         ensureCreable(value);
         this.value = value;
     }
 
-    private static void ensureCreable(BigDecimal value) {
+    private static void ensureCreable(BigDecimal value) throws DomainValidationException {
         if (value == null) {
-            throw new IllegalArgumentException("Value 'null' is invalid");
+            throw new DomainValidationException("Value 'null' is invalid");
         }
         if (value.compareTo(BigDecimal.ZERO) == 0) {
-            throw new IllegalArgumentException("Value 'zero' is invalid");
+            throw new DomainValidationException("Value 'zero' is invalid");
         }
     }
 

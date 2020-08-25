@@ -8,6 +8,7 @@ import org.example.java_sample_web_payment_app.adapters.controllers.requests.HTT
 import org.example.java_sample_web_payment_app.application.exceptions.AccountIdNotExistsException;
 import org.example.java_sample_web_payment_app.application.exceptions.OperationTypeIdNotExistsException;
 import org.example.java_sample_web_payment_app.application.ports.in.CreateTransactionUsecasePort;
+import org.example.java_sample_web_payment_app.domain.DomainValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -43,9 +44,12 @@ public class HTTPTransactionsController {
                     body.get().operationTypeId, body.get().amount);
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
 
-        } catch (AccountIdNotExistsException | OperationTypeIdNotExistsException exception) {
+        } catch (DomainValidationException exception) {
             LOGGER.error("exception, message={}", exception.getMessage());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+        } catch (AccountIdNotExistsException | OperationTypeIdNotExistsException exception) {
+            LOGGER.error("exception, message={}", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }
 }

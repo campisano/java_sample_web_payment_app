@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class AccountTest {
 
     @Test
-    public void test_creation() {
+    public void test_creation() throws Exception {
         Account account = new Account(Long.valueOf(1), "document_number");
 
         Assertions.assertEquals(Long.valueOf(1), account.getAccountId());
@@ -14,22 +14,22 @@ public class AccountTest {
     }
 
     @Test
-    public void test_creation_null_account_id() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_null_account_id() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Account(null, "document_number");
         });
     }
 
     @Test
-    public void test_creation_empty_document_number() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_empty_document_number() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Account(Long.valueOf(1), "");
         });
     }
 
     @Test
-    public void test_creation_null_document_number() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_null_document_number() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Account(Long.valueOf(1), null);
         });
     }

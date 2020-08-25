@@ -11,6 +11,7 @@ import org.example.java_sample_web_payment_app.application.exceptions.AccountAlr
 import org.example.java_sample_web_payment_app.application.exceptions.AccountIdNotExistsException;
 import org.example.java_sample_web_payment_app.application.ports.in.CreateAccountUsecasePort;
 import org.example.java_sample_web_payment_app.application.ports.in.RetrieveAccountUsecasePort;
+import org.example.java_sample_web_payment_app.domain.DomainValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -48,9 +49,12 @@ public class HTTPAccountsController {
             createAccountUsecase.execute(body.get().documentNumber);
             LOGGER.info("created, documentNumber={}", body.get().documentNumber);
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
-        } catch (AccountAlreadyExistsException exception) {
+        } catch (DomainValidationException exception) {
             LOGGER.error("exception, message={}", exception.getMessage());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
+        } catch (AccountAlreadyExistsException exception) {
+            LOGGER.error("exception, message={}", exception.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }
 

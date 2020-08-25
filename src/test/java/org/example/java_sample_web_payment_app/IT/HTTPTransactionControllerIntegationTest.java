@@ -36,7 +36,7 @@ public class HTTPTransactionControllerIntegationTest {
     private TestRestTemplate rest;
 
     @Test
-    public void test_post() {
+    public void test_post() throws Exception {
         HTTPAccountsPostRequest body1 = new HTTPAccountsPostRequest();
         body1.documentNumber = "12345678900";
         ResponseEntity<?> response1 = rest.postForEntity("/accounts", body1, null);
@@ -52,7 +52,7 @@ public class HTTPTransactionControllerIntegationTest {
     }
 
     @Test
-    public void test_post_not_exists() {
+    public void test_post_not_exists() throws Exception {
         HTTPTransactionsPostRequest body = new HTTPTransactionsPostRequest();
         body.accountId = Long.valueOf(1);
         body.operationTypeId = Long.valueOf(4);
@@ -60,11 +60,11 @@ public class HTTPTransactionControllerIntegationTest {
 
         ResponseEntity<?> response = rest.postForEntity("/transactions", body, null);
 
-        Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
+        Assertions.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
     }
 
     @Test
-    public void test_post_empty() {
+    public void test_post_empty() throws Exception {
         ResponseEntity<?> response = rest.postForEntity("/transactions", Optional.empty(), null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());

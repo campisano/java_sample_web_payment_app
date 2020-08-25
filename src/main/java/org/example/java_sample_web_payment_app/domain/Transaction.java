@@ -1,7 +1,5 @@
 package org.example.java_sample_web_payment_app.domain;
 
-import java.text.MessageFormat;
-
 public class Transaction {
 
     public enum Type {
@@ -13,7 +11,7 @@ public class Transaction {
     private Type type;
     private Money amount;
 
-    public Transaction(Long transactionId, Account account, Type type, Money amount) {
+    public Transaction(Long transactionId, Account account, Type type, Money amount) throws DomainValidationException {
         ensureCreable(transactionId, account, type, amount);
         this.transactionId = transactionId;
         this.account = account;
@@ -37,27 +35,28 @@ public class Transaction {
         return amount;
     }
 
-    private static void ensureCreable(Long transactionId, Account account, Type type, Money amount) {
+    private static void ensureCreable(Long transactionId, Account account, Type type, Money amount)
+            throws DomainValidationException {
         if (transactionId == null) {
-            throw new IllegalArgumentException(MessageFormat.format("Transaction id [{0}] is invalid", transactionId));
+            throw new DomainValidationException("Transaction id [{0}] is invalid", transactionId);
         }
         if (account == null) {
-            throw new IllegalArgumentException("Account 'null' is invalid");
+            throw new DomainValidationException("Account 'null' is invalid");
         }
         if (type == null) {
-            throw new IllegalArgumentException("Type 'null' is invalid");
+            throw new DomainValidationException("Type 'null' is invalid");
         }
         if (amount == null) {
-            throw new IllegalArgumentException("Amount 'null' is invalid");
+            throw new DomainValidationException("Amount 'null' is invalid");
         }
 
         if (type.equals(Type.PAYMENT)) {
             if (amount.isNegative()) {
-                throw new IllegalArgumentException("Payment transaction must have a positive amount");
+                throw new DomainValidationException("Payment transaction must have a positive amount");
             }
         } else {
             if (amount.isPositive()) {
-                throw new IllegalArgumentException("Only Payment transaction can have a positive amount");
+                throw new DomainValidationException("Only Payment transaction can have a positive amount");
             }
         }
     }

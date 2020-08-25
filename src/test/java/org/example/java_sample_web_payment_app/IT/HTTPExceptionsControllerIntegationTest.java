@@ -33,28 +33,16 @@ public class HTTPExceptionsControllerIntegationTest {
     private TestRestTemplate rest;
 
     @Test
-    public void test_not_found() {
+    public void test_not_found() throws Exception {
         ResponseEntity<?> response = rest.postForEntity("/not_existent", null, null);
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
-    public void test_bad_request() {
+    public void test_bad_request() throws Exception {
         ResponseEntity<?> response = rest.exchange("/accounts", HttpMethod.POST, HttpEntity.EMPTY, Object.class);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
-
-    @Test
-    public void test_internal_server_error() {
-        ResponseEntity<?> response = rest.exchange("/accounts", HttpMethod.POST, new HttpEntity<>(new BadRequestDTO()),
-                Object.class);
-
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
-    }
-}
-
-class BadRequestDTO {
-    public long id;
 }

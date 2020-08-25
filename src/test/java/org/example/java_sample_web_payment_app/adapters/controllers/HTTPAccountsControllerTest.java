@@ -42,7 +42,7 @@ public class HTTPAccountsControllerTest {
 
         ResponseEntity<?> response = controller.post(mockRequest(), Optional.of(body));
 
-        Assertions.assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
+        Assertions.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any());
         Mockito.verifyNoMoreInteractions(usecase);
     }

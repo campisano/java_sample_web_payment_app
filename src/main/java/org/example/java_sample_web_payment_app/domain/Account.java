@@ -1,12 +1,10 @@
 package org.example.java_sample_web_payment_app.domain;
 
-import java.text.MessageFormat;
-
 public class Account {
     private Long accountId;
     private String documentNumber;
 
-    public Account(Long accountId, String documentNumber) {
+    public Account(Long accountId, String documentNumber) throws DomainValidationException {
         ensureCreable(accountId, documentNumber);
         this.accountId = accountId;
         this.documentNumber = documentNumber;
@@ -20,14 +18,13 @@ public class Account {
         return documentNumber;
     }
 
-    private static void ensureCreable(Long accountId, String documentNumber) {
+    private static void ensureCreable(Long accountId, String documentNumber) throws DomainValidationException {
         if (accountId == null) {
-            throw new IllegalArgumentException(MessageFormat.format("Account id [{0}] is invalid", accountId));
+            throw new DomainValidationException("Account id [{0}] is invalid", accountId);
         }
 
         if (documentNumber == null || documentNumber.length() == 0) {
-            throw new IllegalArgumentException(
-                    MessageFormat.format("Document number [{0}] is invalid", documentNumber));
+            throw new DomainValidationException("Document number [{0}] is invalid", documentNumber);
         }
     }
 }

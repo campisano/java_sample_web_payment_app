@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 public class TransactionTest {
 
     @Test
-    public void test_creation_cash() {
+    public void test_creation_cash() throws Exception {
         Transaction transaction = new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                 Transaction.Type.CASH, new Money(-100));
 
@@ -17,7 +17,7 @@ public class TransactionTest {
     }
 
     @Test
-    public void test_creation_installment() {
+    public void test_creation_installment() throws Exception {
         Transaction transaction = new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                 Transaction.Type.INSTALLMENT, new Money(-10));
 
@@ -28,7 +28,7 @@ public class TransactionTest {
     }
 
     @Test
-    public void test_creation_installment_withdrawal() {
+    public void test_creation_installment_withdrawal() throws Exception {
         Transaction transaction = new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                 Transaction.Type.WITHDRAWAL, new Money(-100));
 
@@ -39,7 +39,7 @@ public class TransactionTest {
     }
 
     @Test
-    public void test_creation_installment_payment() {
+    public void test_creation_installment_payment() throws Exception {
         Transaction transaction = new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                 Transaction.Type.PAYMENT, new Money(100));
 
@@ -50,62 +50,62 @@ public class TransactionTest {
     }
 
     @Test
-    public void test_creation_null_transaction_id() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_null_transaction_id() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Transaction(null, new Account(Long.valueOf(1), "document_number"), Transaction.Type.CASH,
                     new Money(-1));
         });
     }
 
     @Test
-    public void test_creation_null_account() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_null_account() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Transaction(Long.valueOf(1), null, Transaction.Type.CASH, new Money(-1));
         });
     }
 
     @Test
-    public void test_creation_null_type() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_null_type() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), null, new Money(-1));
         });
     }
 
     @Test
-    public void test_creation_null_amount() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_null_amount() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), Transaction.Type.CASH,
                     null);
         });
     }
 
     @Test
-    public void test_creation_cash_positive() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_cash_positive() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), Transaction.Type.CASH,
                     new Money(1));
         });
     }
 
     @Test
-    public void test_creation_installment_positive() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_installment_positive() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                     Transaction.Type.INSTALLMENT, new Money(1));
         });
     }
 
     @Test
-    public void test_creation_withdrawal_positive() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_withdrawal_positive() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"),
                     Transaction.Type.WITHDRAWAL, new Money(1));
         });
     }
 
     @Test
-    public void test_creation_payment_negative() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+    public void test_creation_payment_negative() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
             new Transaction(Long.valueOf(1), new Account(Long.valueOf(1), "document_number"), Transaction.Type.PAYMENT,
                     new Money(-1));
         });
