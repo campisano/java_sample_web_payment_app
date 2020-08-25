@@ -1,6 +1,7 @@
 package org.example.java_sample_web_payment_app;
 
 import org.example.java_sample_web_payment_app.application.ports.out.AccountsRepositoryPort;
+import org.example.java_sample_web_payment_app.application.ports.out.TimeRepositoryPort;
 import org.example.java_sample_web_payment_app.application.ports.out.TransactionsRepositoryPort;
 import org.example.java_sample_web_payment_app.application.usecases.CreateAccountUsecase;
 import org.example.java_sample_web_payment_app.application.usecases.CreateTransactionUsecase;
@@ -34,7 +35,7 @@ class SpringRetrieveAccountUsecase extends RetrieveAccountUsecase {
 @Service
 class SpringCreateTransactionUseCase extends CreateTransactionUsecase {
     public SpringCreateTransactionUseCase(AccountsRepositoryPort accountsRepository,
-            TransactionsRepositoryPort transactionsRepository) {
-        super(accountsRepository, transactionsRepository);
+            TransactionsRepositoryPort transactionsRepository, TimeRepositoryPort timeRepository) {
+        super(accountsRepository, transactionsRepository, timeRepository);
     }
 }

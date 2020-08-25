@@ -44,7 +44,7 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
     @Override
     public void add(TransactionDTO transaction) {
         TransactionModel model = new TransactionModel(transaction.transactionId, transaction.accountId,
-                transaction.operationTypeId, transaction.amount);
+                transaction.operationTypeId, transaction.amount, transaction.eventDate);
         repository.save(model);
     }
 }

@@ -1,5 +1,7 @@
 package org.example.java_sample_web_payment_app.domain;
 
+import java.time.LocalDateTime;
+
 public class Transaction {
 
     public enum Type {
@@ -10,13 +12,16 @@ public class Transaction {
     private Account account;
     private Type type;
     private Money amount;
+    private LocalDateTime eventDate;
 
-    public Transaction(Long transactionId, Account account, Type type, Money amount) throws DomainValidationException {
-        ensureCreable(transactionId, account, type, amount);
+    public Transaction(Long transactionId, Account account, Type type, Money amount, LocalDateTime eventDate)
+            throws DomainValidationException {
+        ensureCreable(transactionId, account, type, amount, eventDate);
         this.transactionId = transactionId;
         this.account = account;
         this.type = type;
         this.amount = amount;
+        this.eventDate = eventDate;
     }
 
     public Long getTransactionId() {
@@ -35,8 +40,12 @@ public class Transaction {
         return amount;
     }
 
-    private static void ensureCreable(Long transactionId, Account account, Type type, Money amount)
-            throws DomainValidationException {
+    public LocalDateTime getEventDate() {
+        return eventDate;
+    }
+
+    private static void ensureCreable(Long transactionId, Account account, Type type, Money amount,
+            LocalDateTime eventDate) throws DomainValidationException {
         if (transactionId == null) {
             throw new DomainValidationException("Transaction id [{0}] is invalid", transactionId);
         }
@@ -48,6 +57,9 @@ public class Transaction {
         }
         if (amount == null) {
             throw new DomainValidationException("Amount 'null' is invalid");
+        }
+        if (eventDate == null) {
+            throw new DomainValidationException("EventDate 'null' is invalid");
         }
 
         if (type.equals(Type.PAYMENT)) {

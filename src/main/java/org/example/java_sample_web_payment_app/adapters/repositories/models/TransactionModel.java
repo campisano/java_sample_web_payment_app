@@ -1,6 +1,7 @@
 package org.example.java_sample_web_payment_app.adapters.repositories.models;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,14 +35,19 @@ public class TransactionModel {
     @Column(nullable = false)
     private BigDecimal amount;
 
+    @Column(nullable = false)
+    private LocalDateTime eventDate;
+
     TransactionModel() {
     }
 
-    public TransactionModel(Long transactionId, Long accountId, Long operationTypeId, BigDecimal amount) {
+    public TransactionModel(Long transactionId, Long accountId, Long operationTypeId, BigDecimal amount,
+            LocalDateTime eventDate) {
         this.transactionId = transactionId;
         this.accountId = accountId;
         this.operationTypeId = operationTypeId;
         this.amount = amount;
+        this.eventDate = eventDate;
     }
 
     public Long getId() {
@@ -82,5 +88,13 @@ public class TransactionModel {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public LocalDateTime getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(LocalDateTime eventDate) {
+        this.eventDate = eventDate;
     }
 }
