@@ -26,7 +26,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @ActiveProfiles("test")
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @Testcontainers
-public class HTTPAccountAdapterIntegationTest {
+public class HTTPAccountControllerIntegationTest {
 
     @Container
     public static final PostgreSQLContainer<?> postgresContainer = CustomPostgresqlContainer.getInstance();
