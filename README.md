@@ -5,7 +5,7 @@
 
 # Java Sample WEB Payment App
 
-Clean Architecture / Hexagonal Java example project using rest and persistence 
+Clean Architecture / Hexagonal Java example project using REST and persistence
 
 &nbsp;
 &nbsp;
@@ -17,7 +17,7 @@ Minimum Requirements
 
 * Docker and DockerCompose can be used to provide a Postgresql database instance that is required to run the project.
 
-* Docker is also required to run integration tests with database interaction. Such tests uses Testcontainers library to provide an isolated PostgreSQL instance to test the application.  
+* Docker is also required to run integration tests with database interaction. Such tests uses Testcontainers library to provide an isolated PostgreSQL instance to test the application.
 
 * Bash shell and curl command are optional tools used in the scripts provided in the `/scripts` folder. Such scripts provides a convenient way to make REST requests to the application.
 
@@ -29,16 +29,16 @@ Run the application
 
 You can execute `docker-compose up -d` to setup a database instance and `mvn spring-boot:run` to run the application.
 
-The following are the principal steps in order test the application locally:
+The following commands can be used to test the application locally:
 
-| Resource to execute          | Shell command                                                    |
-|------------------------------|------------------------------------------------------------------|
-| Application tests            | mvn test                                                         |
-| Database instance            | docker-compose up -d                                             |
-| Application instance         | mvn spring-boot:run                                              |
-| Account creation request     | ./scripts/accounts_post.sh http://127.0.0.1:8080 12345678900     |
-| Account retrieve request     | ./scripts/accounts_get.sh http://127.0.0.1:8080 1                |
-| Transaction creation request |  ./scripts/transactions_post.sh http://127.0.0.1:8080 1 4 123.45 |
+| Resource to execute          | Command                                                         |
+|------------------------------|-----------------------------------------------------------------|
+| Application tests            | mvn test                                                        |
+| Database instance            | docker-compose up -d                                            |
+| Application instance         | mvn spring-boot:run                                             |
+| Account creation request     | ./scripts/accounts_post.sh http://127.0.0.1:8080 12345678900    |
+| Account retrieve request     | ./scripts/accounts_get.sh http://127.0.0.1:8080 1               |
+| Transaction creation request | ./scripts/transactions_post.sh http://127.0.0.1:8080 1 4 123.45 |
 
 &nbsp;
 &nbsp;
@@ -46,12 +46,12 @@ The following are the principal steps in order test the application locally:
 Business rules
 --------------
 
-* An account contains the client identification
-* A transaction is associated with a specific account
-* A transaction has a value, a creation date and a type
-* A transaction type can be cash, installment, withdrawal, payment
-* A transaction with a positive amount must be of payment type
-* A transaction with a negative amount cannot be of payment type
+* An Account contains the client identification.
+* A Transaction is associated with a specific Account.
+* A Transaction has an amount, a creation date and a type.
+* A Transaction type can be "cash", "installment", "withdrawal" or "payment".
+* A Transaction with a positive value must be a "payment".
+* A Transaction with a negative value cannot be a "payment".
 
 &nbsp;
 &nbsp;
