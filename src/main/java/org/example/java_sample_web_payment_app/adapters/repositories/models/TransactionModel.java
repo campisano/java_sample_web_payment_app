@@ -23,19 +23,19 @@ public class TransactionModel {
     private Long id;
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ_GEN)
-    @Column(nullable = false, unique = true, updatable = true, columnDefinition = "serial")
+    @Column(columnDefinition = "bigserial", nullable = false, unique = true, updatable = true)
     private Long transactionId;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "bigint", nullable = false)
     private Long accountId;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "bigint", nullable = false)
     private Long operationTypeId;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "numeric", nullable = false)
     private BigDecimal amount;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "timestamp", nullable = false)
     private LocalDateTime eventDate;
 
     TransactionModel() {

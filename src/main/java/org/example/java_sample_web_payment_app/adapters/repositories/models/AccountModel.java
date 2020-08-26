@@ -20,10 +20,10 @@ public class AccountModel {
     private Long id;
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ_GEN)
-    @Column(nullable = false, unique = true, updatable = true, columnDefinition = "serial")
+    @Column(columnDefinition = "bigserial", nullable = false, unique = true, updatable = true)
     private Long accountId;
 
-    @Column(nullable = false, unique = true)
+    @Column(columnDefinition = "text", nullable = false, unique = true)
     private String documentNumber;
 
     AccountModel() {
