@@ -5,7 +5,7 @@ set -x -o errexit -o nounset -o pipefail
 export DEBIAN_FRONTEND=noninteractive
 apt-get -qq -y update
 apt-get -qq -y install --no-install-recommends apt-utils > /dev/null
-apt-get -qq -y install curl tar gzip > /dev/null
+apt-get -qq -y install wget tar gzip > /dev/null
 
 ./ci/custom/install_maven.sh
 mvn -B -ntp clean test package spring-boot:repackage

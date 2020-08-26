@@ -7,6 +7,7 @@ TOKEN="$1"
 export DEBIAN_FRONTEND=noninteractive
 apt-get -qq -y update
 apt-get -qq -y install --no-install-recommends apt-utils > /dev/null
-apt-get -qq -y install curl git > /dev/null
+apt-get -qq -y install wget git > /dev/null
 
-bash <(curl -s https://codecov.io/bash) -X coveragepy -X xcode -s ./target -t "${TOKEN}"
+wget -c -nv --no-check-certificate -O codecov https://codecov.io/bash
+bash ./codecov -X coveragepy -X xcode -s ./target -t "${TOKEN}"
