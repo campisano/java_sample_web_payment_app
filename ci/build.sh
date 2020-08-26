@@ -13,6 +13,7 @@ docker pull "${DOCKER_IMAGE}"
 
 # build code isolatedly
 docker run \
+       --volume /var/run/docker.sock:/var/run/docker.sock \
        --mount type=bind,source="$(pwd)",target=/srv/repository \
        --mount type=bind,source="${HOME}/.custom_cache/srv/cache",target=/srv/cache \
        --mount type=bind,source="${HOME}/.custom_cache/var/cache/apt/archives",target=/var/cache/apt/archives \
