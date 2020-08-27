@@ -23,11 +23,12 @@ public class CreateAccountUsecase implements CreateAccountUsecasePort {
         }
 
         Long accountId = accountsRepository.generateUniqueAccountId();
-        new Account(accountId, documentNumber);
+        Account account = new Account(accountId, documentNumber);
 
         AccountDTO dto = new AccountDTO();
-        dto.accountId = accountId;
-        dto.documentNumber = documentNumber;
+        dto.accountId = account.getAccountId();
+        dto.documentNumber = account.getDocumentNumber();
+        dto.creditLimit = account.getCreditLimit().getValue();
 
         accountsRepository.add(dto);
     }

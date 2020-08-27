@@ -30,7 +30,7 @@ public class JPAAccountsRepository implements AccountsRepositoryPort {
 
     @Override
     public void add(AccountDTO account) {
-        AccountModel model = new AccountModel(account.accountId, account.documentNumber);
+        AccountModel model = new AccountModel(account.accountId, account.documentNumber, account.creditLimit);
         repository.save(model);
     }
 
@@ -46,8 +46,17 @@ public class JPAAccountsRepository implements AccountsRepositoryPort {
             {
                 accountId = account.get().getId();
                 documentNumber = account.get().getDocumentNumber();
+                creditLimit = account.get().getCreditLimit();
             }
         });
+    }
+
+    @Override
+    public void update(AccountDTO accountDto) {
+        Optional<AccountModel> model = repository.findByAccountId(accountDto.accountId);
+        model.get().setDocumentNumber(accountDto.documentNumber);
+        model.get().setCreditLimit(accountDto.creditLimit);
+        repository.save(model.get());
     }
 }
 

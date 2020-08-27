@@ -33,4 +33,20 @@ public class AccountTest {
             new Account(Long.valueOf(1), null);
         });
     }
+
+    @Test
+    public void test_subtract() throws Exception {
+        Account account = new Account(Long.valueOf(1), "document_number", new Money(100));
+
+        account.subtract(new Money(10));
+
+        Assertions.assertEquals(new Money(90), account.getCreditLimit());
+    }
+
+    @Test
+    public void test_subtract_to_negative() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
+            new Account(Long.valueOf(1), null, new Money(100)).subtract(new Money(101));
+        });
+    }
 }

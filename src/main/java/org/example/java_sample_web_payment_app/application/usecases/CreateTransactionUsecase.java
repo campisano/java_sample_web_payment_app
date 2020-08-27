@@ -34,9 +34,9 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
     public void execute(Long accountId, Long operationTypeId, BigDecimal amount)
             throws DomainValidationException, AccountIdNotExistsException, OperationTypeIdNotExistsException {
 
-        Optional<AccountDTO> account = accountsRepository.findByAccountId(accountId);
+        Optional<AccountDTO> accountDtoOriginal = accountsRepository.findByAccountId(accountId);
 
-        if (account.isEmpty()) {
+        if (accountDtoOriginal.isEmpty()) {
             throw new AccountIdNotExistsException(accountId);
         }
 
@@ -48,16 +48,33 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
 
         Long transactionId = transactionsRepository.generateUniqueTransactionId();
         LocalDateTime currentTime = timeRepository.getCurrentTime();
-        new Transaction(transactionId, new Account(account.get().accountId, account.get().documentNumber), type.get(),
+        Transaction transaction = new Transaction(transactionId, new Account(accountDtoOriginal.get().accountId,
+                accountDtoOriginal.get().documentNumber, new Money(accountDtoOriginal.get().creditLimit)), type.get(),
                 new Money(amount), currentTime);
 
-        TransactionDTO dto = new TransactionDTO();
-        dto.transactionId = transactionId;
-        dto.accountId = accountId;
-        dto.operationTypeId = operationTypeId;
-        dto.amount = amount;
-        dto.eventDate = currentTime;
+        TransactionDTO tDto = new TransactionDTO();
+        tDto.transactionId = transactionId;
+        tDto.accountId = accountId;
+        tDto.operationTypeId = operationTypeId;
+        tDto.amount = transaction.getAccount().getCreditLimit().getValue();
+        tDto.eventDate = currentTime;
 
-        transactionsRepository.add(dto);
+        // TODO domain stuff? should transaction change account creditLimit?
+        Account account = transaction.getAccount();
+        account.subtract(new Money(amount));
+
+        AccountDTO aDto = new AccountDTO() {
+            {
+                accountId = account.getAccountId();
+                documentNumber = account.getDocumentNumber();
+                creditLimit = account.getCreditLimit().getValue();
+            }
+        };
+
+        // TODO transactional is needed here
+        {
+            transactionsRepository.add(tDto);
+            accountsRepository.update(aDto);
+        }
     }
 }
