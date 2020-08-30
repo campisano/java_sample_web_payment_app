@@ -83,12 +83,10 @@ public class CreateTransactionUsecaseTest {
             Mockito.verify(transactionsRepo, Mockito.times(1))
                     .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
                             && dto.operationTypeId.equals(Long.valueOf(4))
-                            && dto.amount.equals(BigDecimal.valueOf(12345, 2))));
-
-            Mockito.verify(accountsRepo, Mockito.times(1))
-                    .update(Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
-                            && dto.documentNumber.contentEquals(foundAccount.documentNumber) && dto.creditLimit
-                                    .equals(foundAccount.creditLimit.subtract(BigDecimal.valueOf(12345, 2)))));
+                            && dto.amount.equals(BigDecimal.valueOf(12345, 2))),
+                            Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
+                                    && dto.documentNumber.contentEquals(foundAccount.documentNumber) && dto.creditLimit
+                                            .equals(foundAccount.creditLimit.subtract(BigDecimal.valueOf(12345, 2)))));
         }
     }
 
@@ -101,8 +99,7 @@ public class CreateTransactionUsecaseTest {
             usecase.execute(Long.valueOf(1), Long.valueOf(4), BigDecimal.valueOf(12345, 2));
         });
 
-        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any());
-        Mockito.verify(accountsRepo, Mockito.times(0)).update(Mockito.any());
+        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(), Mockito.any());
     }
 
     @Test
@@ -123,8 +120,7 @@ public class CreateTransactionUsecaseTest {
             usecase.execute(Long.valueOf(1), Long.valueOf(4), BigDecimal.valueOf(12345, 2));
         });
 
-        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any());
-        Mockito.verify(accountsRepo, Mockito.times(0)).update(Mockito.any());
+        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(), Mockito.any());
     }
 
     @Test
@@ -157,12 +153,10 @@ public class CreateTransactionUsecaseTest {
 
         // assert changes
         {
-            Mockito.verify(transactionsRepo, Mockito.times(1))
-                    .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
+            Mockito.verify(transactionsRepo, Mockito.times(1)).add(
+                    Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
                             && dto.operationTypeId.equals(Long.valueOf(4))
-                            && dto.amount.equals(BigDecimal.valueOf(30))));
-
-            Mockito.verify(accountsRepo, Mockito.times(1)).update(
+                            && dto.amount.equals(BigDecimal.valueOf(30))),
                     Mockito.argThat((AccountDTO account) -> account.creditLimit.equals(BigDecimal.valueOf(70))));
         }
     }
@@ -189,7 +183,6 @@ public class CreateTransactionUsecaseTest {
             usecase.execute(Long.valueOf(1), Long.valueOf(4), BigDecimal.valueOf(80));
         });
 
-        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any());
-        Mockito.verify(accountsRepo, Mockito.times(0)).update(Mockito.any());
+        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(), Mockito.any());
     }
 }

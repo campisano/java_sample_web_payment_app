@@ -68,7 +68,7 @@ interface SpringJPAAccountsRepository extends org.springframework.data.repositor
 
     boolean existsByDocumentNumber(String documentNumber);
 
-    public AccountModel save(AccountModel model);
+    AccountModel save(AccountModel model);
 
-    public Optional<AccountModel> findByAccountId(Long id);
+    Optional<AccountModel> findByAccountId(Long id);
 }

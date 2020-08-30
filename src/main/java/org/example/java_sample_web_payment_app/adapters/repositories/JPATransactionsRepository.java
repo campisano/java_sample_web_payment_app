@@ -2,7 +2,10 @@ package org.example.java_sample_web_payment_app.adapters.repositories;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.example.java_sample_web_payment_app.adapters.repositories.models.TransactionModel;
+import org.example.java_sample_web_payment_app.application.dtos.AccountDTO;
 import org.example.java_sample_web_payment_app.application.dtos.TransactionDTO;
 import org.example.java_sample_web_payment_app.application.ports.out.TransactionsRepositoryPort;
 import org.example.java_sample_web_payment_app.domain.Transaction;
@@ -14,22 +17,27 @@ import org.springframework.stereotype.Repository;
 @Component
 public class JPATransactionsRepository implements TransactionsRepositoryPort {
 
-    private SpringJPATransactionsRepository repository;
+    private SpringJPATransactionsRepository transactionsRepo;
+    private JPAAccountsRepository accountsRepo;
 
-    public JPATransactionsRepository(SpringJPATransactionsRepository repository) {
-        this.repository = repository;
+    public JPATransactionsRepository(SpringJPATransactionsRepository transactionsRepo,
+            JPAAccountsRepository accountsRepo) {
+        this.transactionsRepo = transactionsRepo;
+        this.accountsRepo = accountsRepo;
     }
 
     @Override
     public Long generateUniqueTransactionId() {
-        return repository.getNextTransactionId();
+        return transactionsRepo.getNextTransactionId();
     }
 
     @Override
-    public void add(TransactionDTO transaction) {
+    @Transactional
+    public void add(TransactionDTO transaction, AccountDTO account) {
         TransactionModel model = new TransactionModel(transaction.transactionId, transaction.accountId,
                 transaction.operationTypeId, transaction.amount, transaction.eventDate);
-        repository.save(model);
+        transactionsRepo.save(model);
+        accountsRepo.update(account);
     }
 
     @Override
@@ -72,5 +80,5 @@ interface SpringJPATransactionsRepository
     @Query(value = "SELECT nextval('" + TransactionModel.ID_SEQ_NAME + "')", nativeQuery = true)
     Long getNextTransactionId();
 
-    public TransactionModel save(TransactionModel model);
+    TransactionModel save(TransactionModel model);
 }

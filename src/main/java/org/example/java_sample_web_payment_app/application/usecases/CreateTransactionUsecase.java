@@ -87,10 +87,6 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
             }
         };
 
-        // TODO transactional is needed here
-        {
-            transactionsRepository.add(tDto);
-            accountsRepository.update(aDto);
-        }
+        transactionsRepository.add(tDto, aDto);
     }
 }
