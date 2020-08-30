@@ -47,13 +47,14 @@ public class CreateTransactionUsecaseTest {
         Mockito.verify(transactionsRepo, Mockito.times(1))
                 .findTypeByTypeId(Mockito.argThat((Long operationId) -> operationId.equals(Long.valueOf(4))));
         Mockito.verify(transactionsRepo, Mockito.times(1)).generateUniqueTransactionId();
-        
-        //TODO check the error there
-//        Mockito.verify(transactionsRepo, Mockito.times(1))
-//                .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
-//                        && dto.operationTypeId.equals(Long.valueOf(4))
-//                        && dto.amount.equals(BigDecimal.valueOf(12345, 2))));
-//        Mockito.verifyNoMoreInteractions(accountsRepo, transactionsRepo);
+
+        Mockito.verify(transactionsRepo, Mockito.times(1))
+                .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
+                        && dto.operationTypeId.equals(Long.valueOf(4))
+                        && dto.amount.equals(BigDecimal.valueOf(12345, 2))));
+
+        Mockito.verify(accountsRepo, Mockito.times(1)).update(Mockito.any());
+        Mockito.verifyNoMoreInteractions(accountsRepo, transactionsRepo);
     }
 
     @Test
@@ -104,11 +105,11 @@ public class CreateTransactionUsecaseTest {
         Mockito.verifyNoMoreInteractions(accountsRepo, transactionsRepo, timeRepo);
     }
 
-    //TODO remove comment
+    // TODO remove comment
     /*
      * Para uma conta com limite 100, ao fazer um saque no valor de 30 o limite deve
      * passar a ser de 70.
-    */
+     */
     @Test
     public void test_execute_operation_check_limit() throws Exception {
         AccountDTO foundAccount = new AccountDTO() {
@@ -139,7 +140,7 @@ public class CreateTransactionUsecaseTest {
                 .update(Mockito.argThat((AccountDTO account) -> account.creditLimit.equals(BigDecimal.valueOf(70, 0))));
     }
 
-    //TODO remove comment
+    // TODO remove comment
     /*
      * Ao tentar fazer uma nova transação de saque no valor de 80 devemos recusá-la,
      * pois o limite disponível agora é de apenas 70. Assim que é emitida uma

@@ -23,6 +23,7 @@ public class CreateAccountUsecase implements CreateAccountUsecasePort {
         }
 
         Long accountId = accountsRepository.generateUniqueAccountId();
+        //TODO define a strategy for a credit limit definition
         Account account = new Account(accountId, documentNumber);
 
         AccountDTO dto = new AccountDTO();

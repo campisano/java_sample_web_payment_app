@@ -12,12 +12,11 @@ public class Account {
         this.creditLimit = creditLimit;
     }
 
-    // TODO is default constructor a good idea?
     public Account(Long accountId, String documentNumber) throws DomainValidationException {
         ensureCreable(accountId, documentNumber);
         this.accountId = accountId;
         this.documentNumber = documentNumber;
-        this.creditLimit = new Money(5000);
+        this.creditLimit = new Money(5000); // TODO default limit is not a good ideia
     }
 
     public Long getAccountId() {

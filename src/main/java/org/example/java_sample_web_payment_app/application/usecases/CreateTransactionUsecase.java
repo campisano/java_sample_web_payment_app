@@ -40,6 +40,9 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
             throw new AccountIdNotExistsException(accountId);
         }
 
+        Account account = new Account(accountDtoOriginal.get().accountId, accountDtoOriginal.get().documentNumber,
+                new Money(accountDtoOriginal.get().creditLimit));
+
         Optional<Transaction.Type> type = transactionsRepository.findTypeByTypeId(operationTypeId);
 
         if (type.isEmpty()) {
@@ -48,20 +51,16 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
 
         Long transactionId = transactionsRepository.generateUniqueTransactionId();
         LocalDateTime currentTime = timeRepository.getCurrentTime();
-        Transaction transaction = new Transaction(transactionId, new Account(accountDtoOriginal.get().accountId,
-                accountDtoOriginal.get().documentNumber, new Money(accountDtoOriginal.get().creditLimit)), type.get(),
-                new Money(amount), currentTime);
+
+        Transaction transaction = new Transaction(transactionId, account, type.get(), new Money(amount), currentTime);
+        account.subtract(transaction.getAmount());
 
         TransactionDTO tDto = new TransactionDTO();
-        tDto.transactionId = transactionId;
-        tDto.accountId = accountId;
+        tDto.transactionId = transaction.getTransactionId();
+        tDto.accountId = transaction.getAccount().getAccountId();
         tDto.operationTypeId = operationTypeId;
-        tDto.amount = transaction.getAccount().getCreditLimit().getValue();
+        tDto.amount = transaction.getAmount().getValue();
         tDto.eventDate = currentTime;
-
-        // TODO domain stuff? should transaction change account creditLimit?
-        Account account = transaction.getAccount();
-        account.subtract(new Money(amount));
 
         AccountDTO aDto = new AccountDTO() {
             {
