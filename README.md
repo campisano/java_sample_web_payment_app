@@ -46,7 +46,9 @@ The following commands can be used to test the application locally:
 Business rules
 --------------
 
-* An Account contains the client identification.
+* An Account contains the client identification and define a credit limit.
+* An Account credit limit increase and decrease for each transaction beeing made.
+* An Account credit limit cannot be negative.
 * A Transaction is associated with a specific Account.
 * A Transaction has an amount, a creation date and a type.
 * A Transaction type can be "cash", "installment", "withdrawal" or "payment".

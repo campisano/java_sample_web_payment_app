@@ -1,6 +1,0 @@
-TODO domain validation, not existing dependencies, duplications: which statuses? 422 409 ... 200 304 plus a rest error?
-
-https://www.restapitutorial.com/httpstatuscodes.html
-https://stackoverflow.com/a/46379701 200 from google/facebook
-
-TODO TransactionModel manual foreing key for account
