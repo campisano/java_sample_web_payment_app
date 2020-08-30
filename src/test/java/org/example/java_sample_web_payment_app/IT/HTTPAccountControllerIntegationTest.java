@@ -1,5 +1,6 @@
 package org.example.java_sample_web_payment_app.IT;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.example.java_sample_web_payment_app.adapters.controllers.requests.HTTPAccountsPostRequest;
@@ -39,6 +40,7 @@ public class HTTPAccountControllerIntegationTest {
         HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {
             {
                 documentNumber = "12345678900";
+                creditLimit = new BigDecimal(5000);
             }
         };
 
@@ -52,6 +54,7 @@ public class HTTPAccountControllerIntegationTest {
         HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {
             {
                 documentNumber = "12345678900";
+                creditLimit = new BigDecimal(5000);
             }
         };
         ResponseEntity<?> response1 = rest.postForEntity("/accounts", body, null);
@@ -72,10 +75,10 @@ public class HTTPAccountControllerIntegationTest {
     @Test
     public void test_get() throws Exception {
         Long existingAccountId = Long.valueOf(1);
-        String existingDocumentNumber = "12345678900";
         rest.postForEntity("/accounts", new HTTPAccountsPostRequest() {
             {
-                documentNumber = existingDocumentNumber;
+                documentNumber = "12345678900";
+                creditLimit = new BigDecimal(5000);
             }
         }, null);
 
@@ -84,7 +87,8 @@ public class HTTPAccountControllerIntegationTest {
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(existingAccountId, response.getBody().accountId);
-        Assertions.assertEquals(existingDocumentNumber, response.getBody().documentNumber);
+        Assertions.assertEquals("12345678900", response.getBody().documentNumber);
+        Assertions.assertEquals(new BigDecimal(5000), response.getBody().creditLimit);
     }
 
     @Test

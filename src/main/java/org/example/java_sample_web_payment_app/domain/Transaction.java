@@ -50,16 +50,16 @@ public class Transaction {
             throw new DomainValidationException("Transaction id [{0}] is invalid", transactionId);
         }
         if (account == null) {
-            throw new DomainValidationException("Account 'null' is invalid");
+            throw new DomainValidationException("Account [{0}] is invalid", account);
         }
         if (type == null) {
-            throw new DomainValidationException("Type 'null' is invalid");
+            throw new DomainValidationException("Type [{0}] is invalid", type);
         }
-        if (amount == null) {
-            throw new DomainValidationException("Amount 'null' is invalid");
+        if (amount == null || amount.isZero()) {
+            throw new DomainValidationException("Amount [{0}]' is invalid", amount);
         }
         if (eventDate == null) {
-            throw new DomainValidationException("EventDate 'null' is invalid");
+            throw new DomainValidationException("EventDate [{0}] is invalid", eventDate);
         }
 
         if (type.equals(Type.PAYMENT)) {

@@ -1,5 +1,7 @@
 package org.example.java_sample_web_payment_app.adapters.repositories.models;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,12 +28,16 @@ public class AccountModel {
     @Column(columnDefinition = "text", nullable = false, unique = true)
     private String documentNumber;
 
+    @Column(columnDefinition = "numeric", nullable = false)
+    private BigDecimal creditLimit;
+
     AccountModel() {
     }
 
-    public AccountModel(Long accountId, String documentNumber) {
+    public AccountModel(Long accountId, String documentNumber, BigDecimal creditLimit) {
         this.accountId = accountId;
         this.documentNumber = documentNumber;
+        this.creditLimit = creditLimit;
     }
 
     public Long getId() {
@@ -56,5 +62,13 @@ public class AccountModel {
 
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
+    }
+
+    public BigDecimal getCreditLimit() {
+        return creditLimit;
+    }
+
+    public void setCreditLimit(BigDecimal creditLimit) {
+        this.creditLimit = creditLimit;
     }
 }

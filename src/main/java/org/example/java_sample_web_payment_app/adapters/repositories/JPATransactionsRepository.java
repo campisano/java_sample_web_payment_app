@@ -2,7 +2,10 @@ package org.example.java_sample_web_payment_app.adapters.repositories;
 
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.example.java_sample_web_payment_app.adapters.repositories.models.TransactionModel;
+import org.example.java_sample_web_payment_app.application.dtos.AccountDTO;
 import org.example.java_sample_web_payment_app.application.dtos.TransactionDTO;
 import org.example.java_sample_web_payment_app.application.ports.out.TransactionsRepositoryPort;
 import org.example.java_sample_web_payment_app.domain.Transaction;
@@ -14,10 +17,27 @@ import org.springframework.stereotype.Repository;
 @Component
 public class JPATransactionsRepository implements TransactionsRepositoryPort {
 
-    private SpringJPATransactionsRepository repository;
+    private SpringJPATransactionsRepository transactionsRepo;
+    private JPAAccountsRepository accountsRepo;
 
-    public JPATransactionsRepository(SpringJPATransactionsRepository repository) {
-        this.repository = repository;
+    public JPATransactionsRepository(SpringJPATransactionsRepository transactionsRepo,
+            JPAAccountsRepository accountsRepo) {
+        this.transactionsRepo = transactionsRepo;
+        this.accountsRepo = accountsRepo;
+    }
+
+    @Override
+    public Long generateUniqueTransactionId() {
+        return transactionsRepo.getNextTransactionId();
+    }
+
+    @Override
+    @Transactional
+    public void add(TransactionDTO transaction, AccountDTO account) {
+        TransactionModel model = new TransactionModel(transaction.transactionId, transaction.accountId,
+                transaction.operationTypeId, transaction.amount, transaction.eventDate);
+        transactionsRepo.save(model);
+        accountsRepo.update(account);
     }
 
     @Override
@@ -37,15 +57,19 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
     }
 
     @Override
-    public Long generateUniqueTransactionId() {
-        return repository.getNextTransactionId();
-    }
-
-    @Override
-    public void add(TransactionDTO transaction) {
-        TransactionModel model = new TransactionModel(transaction.transactionId, transaction.accountId,
-                transaction.operationTypeId, transaction.amount, transaction.eventDate);
-        repository.save(model);
+    public Optional<Long> findTypeIdByType(Type type) {
+        switch (type) {
+        case CASH:
+            return Optional.of(Long.valueOf(1));
+        case INSTALLMENT:
+            return Optional.of(Long.valueOf(2));
+        case WITHDRAWAL:
+            return Optional.of(Long.valueOf(3));
+        case PAYMENT:
+            return Optional.of(Long.valueOf(4));
+        default:
+            return Optional.empty();
+        }
     }
 }
 
@@ -56,5 +80,5 @@ interface SpringJPATransactionsRepository
     @Query(value = "SELECT nextval('" + TransactionModel.ID_SEQ_NAME + "')", nativeQuery = true)
     Long getNextTransactionId();
 
-    public TransactionModel save(TransactionModel model);
+    TransactionModel save(TransactionModel model);
 }

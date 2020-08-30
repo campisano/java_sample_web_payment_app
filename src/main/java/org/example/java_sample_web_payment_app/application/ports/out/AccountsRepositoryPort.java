@@ -13,4 +13,6 @@ public interface AccountsRepositoryPort {
     void add(AccountDTO account);
 
     Optional<AccountDTO> findByAccountId(Long accountId);
+
+    void update(AccountDTO account);
 }

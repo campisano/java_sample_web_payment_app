@@ -38,7 +38,7 @@ public class HTTPAccountsController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<?> post(HttpServletRequest request, @RequestBody Optional<HTTPAccountsPostRequest> body) {
-        LOGGER.info("method={}, path={}, body={}", request.getMethod(), request.getRequestURI(), body);
+        LOGGER.info("method={}, path={}, body={}", request.getMethod(), request.getRequestURI(), body.orElse(null));
 
         if (!body.isPresent()) {
             LOGGER.error("request without body");
@@ -46,8 +46,8 @@ public class HTTPAccountsController {
         }
 
         try {
-            createAccountUsecase.execute(body.get().documentNumber);
-            LOGGER.info("created, documentNumber={}", body.get().documentNumber);
+            createAccountUsecase.execute(body.get().documentNumber, body.get().creditLimit);
+            LOGGER.info("created, request={}", body.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
         } catch (DomainValidationException exception) {
             LOGGER.error("exception, message={}", exception.getMessage());
@@ -74,6 +74,7 @@ public class HTTPAccountsController {
                 {
                     accountId = dto.accountId;
                     documentNumber = dto.documentNumber;
+                    creditLimit = dto.creditLimit;
                 }
             });
         } catch (AccountIdNotExistsException exception) {
