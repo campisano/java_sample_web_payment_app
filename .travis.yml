@@ -14,7 +14,7 @@ if: tag IS blank
 jobs:
   include:
     - stage: "Test"
-      if: branch != master AND type != pull_request
+      if: branch != master OR type = pull_request
       install: skip
       script:
         - ./ci/build.sh
