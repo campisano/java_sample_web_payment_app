@@ -72,6 +72,7 @@ public class HTTPAccountsControllerTest {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(expectedAccount.accountId, response.getBody().accountId);
         Assertions.assertEquals(expectedAccount.documentNumber, response.getBody().documentNumber);
+        Assertions.assertEquals(expectedAccount.creditLimit, response.getBody().creditLimit);
         Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any());
         Mockito.verifyNoMoreInteractions(usecase);
     }

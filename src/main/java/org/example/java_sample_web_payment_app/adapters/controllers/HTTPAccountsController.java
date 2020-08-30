@@ -74,6 +74,7 @@ public class HTTPAccountsController {
                 {
                     accountId = dto.accountId;
                     documentNumber = dto.documentNumber;
+                    creditLimit = dto.creditLimit;
                 }
             });
         } catch (AccountIdNotExistsException exception) {
