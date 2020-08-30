@@ -30,11 +30,13 @@ public class CreateTransactionUsecaseTest {
             }
         };
         Transaction.Type foundType = Type.PAYMENT;
+        Long foundTypeId = Long.valueOf(4);
         Long generatedTransactionId = Long.valueOf(1);
         AccountsRepositoryPort accountsRepo = Mockito.mock(AccountsRepositoryPort.class);
         Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
         TransactionsRepositoryPort transactionsRepo = Mockito.mock(TransactionsRepositoryPort.class);
         Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.of(foundType));
+        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(Optional.of(foundTypeId));
         Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(generatedTransactionId);
         TimeRepositoryPort timeRepo = Mockito.mock(TimeRepositoryPort.class);
         Mockito.when(timeRepo.getCurrentTime()).thenReturn(LocalDateTime.MIN);
@@ -46,6 +48,8 @@ public class CreateTransactionUsecaseTest {
                 .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(Long.valueOf(1))));
         Mockito.verify(transactionsRepo, Mockito.times(1))
                 .findTypeByTypeId(Mockito.argThat((Long operationId) -> operationId.equals(Long.valueOf(4))));
+        Mockito.verify(transactionsRepo, Mockito.times(1))
+                .findTypeIdByType(Mockito.argThat((Type operation) -> operation.equals(Type.PAYMENT)));
         Mockito.verify(transactionsRepo, Mockito.times(1)).generateUniqueTransactionId();
 
         Mockito.verify(transactionsRepo, Mockito.times(1))
@@ -120,6 +124,7 @@ public class CreateTransactionUsecaseTest {
             }
         };
         Transaction.Type foundType = Type.PAYMENT;
+        Long foundTypeId = Long.valueOf(4);
         Long generatedTransactionId = Long.valueOf(1);
 
         AccountsRepositoryPort accountsRepo = Mockito.mock(AccountsRepositoryPort.class);
@@ -127,6 +132,7 @@ public class CreateTransactionUsecaseTest {
 
         TransactionsRepositoryPort transactionsRepo = Mockito.mock(TransactionsRepositoryPort.class);
         Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.of(foundType));
+        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(Optional.of(foundTypeId));
         Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(generatedTransactionId);
 
         TimeRepositoryPort timeRepo = Mockito.mock(TimeRepositoryPort.class);

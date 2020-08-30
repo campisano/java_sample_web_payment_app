@@ -34,15 +34,26 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
     public void execute(Long accountId, Long operationTypeId, BigDecimal amount)
             throws DomainValidationException, AccountIdNotExistsException, OperationTypeIdNotExistsException {
 
+        Account account = retrieveAccount(accountId);
+
+        Transaction transaction = processNewTransaction(account, operationTypeId, amount);
+
+        persistTransaction(transaction);
+    }
+
+    private Account retrieveAccount(Long accountId) throws AccountIdNotExistsException, DomainValidationException {
         Optional<AccountDTO> accountDtoOriginal = accountsRepository.findByAccountId(accountId);
 
         if (accountDtoOriginal.isEmpty()) {
             throw new AccountIdNotExistsException(accountId);
         }
 
-        Account account = new Account(accountDtoOriginal.get().accountId, accountDtoOriginal.get().documentNumber,
+        return new Account(accountDtoOriginal.get().accountId, accountDtoOriginal.get().documentNumber,
                 new Money(accountDtoOriginal.get().creditLimit));
+    }
 
+    private Transaction processNewTransaction(Account account, Long operationTypeId, BigDecimal amount)
+            throws OperationTypeIdNotExistsException, DomainValidationException {
         Optional<Transaction.Type> type = transactionsRepository.findTypeByTypeId(operationTypeId);
 
         if (type.isEmpty()) {
@@ -55,12 +66,18 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
         Transaction transaction = new Transaction(transactionId, account, type.get(), new Money(amount), currentTime);
         account.subtract(transaction.getAmount());
 
+        return transaction;
+    }
+
+    private void persistTransaction(Transaction transaction) {
+        Account account = transaction.getAccount();
+
         TransactionDTO tDto = new TransactionDTO();
         tDto.transactionId = transaction.getTransactionId();
-        tDto.accountId = transaction.getAccount().getAccountId();
-        tDto.operationTypeId = operationTypeId;
+        tDto.accountId = account.getAccountId();
+        tDto.operationTypeId = transactionsRepository.findTypeIdByType(transaction.getType()).get();
         tDto.amount = transaction.getAmount().getValue();
-        tDto.eventDate = currentTime;
+        tDto.eventDate = transaction.getEventDate();
 
         AccountDTO aDto = new AccountDTO() {
             {

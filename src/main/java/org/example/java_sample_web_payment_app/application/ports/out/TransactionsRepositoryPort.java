@@ -7,9 +7,11 @@ import org.example.java_sample_web_payment_app.domain.Transaction;
 
 public interface TransactionsRepositoryPort {
 
-    Optional<Transaction.Type> findTypeByTypeId(Long operationTypeId);
-
     Long generateUniqueTransactionId();
 
     void add(TransactionDTO dto);
+
+    Optional<Transaction.Type> findTypeByTypeId(Long operationTypeId);
+
+    Optional<Long> findTypeIdByType(Transaction.Type type);
 }

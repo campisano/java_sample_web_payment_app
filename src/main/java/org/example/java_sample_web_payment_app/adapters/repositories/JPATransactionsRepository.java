@@ -21,6 +21,18 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
     }
 
     @Override
+    public Long generateUniqueTransactionId() {
+        return repository.getNextTransactionId();
+    }
+
+    @Override
+    public void add(TransactionDTO transaction) {
+        TransactionModel model = new TransactionModel(transaction.transactionId, transaction.accountId,
+                transaction.operationTypeId, transaction.amount, transaction.eventDate);
+        repository.save(model);
+    }
+
+    @Override
     public Optional<Type> findTypeByTypeId(Long operationTypeId) {
         switch (operationTypeId.intValue()) {
         case 1:
@@ -37,15 +49,19 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
     }
 
     @Override
-    public Long generateUniqueTransactionId() {
-        return repository.getNextTransactionId();
-    }
-
-    @Override
-    public void add(TransactionDTO transaction) {
-        TransactionModel model = new TransactionModel(transaction.transactionId, transaction.accountId,
-                transaction.operationTypeId, transaction.amount, transaction.eventDate);
-        repository.save(model);
+    public Optional<Long> findTypeIdByType(Type type) {
+        switch (type) {
+        case CASH:
+            return Optional.of(Long.valueOf(1));
+        case INSTALLMENT:
+            return Optional.of(Long.valueOf(2));
+        case WITHDRAWAL:
+            return Optional.of(Long.valueOf(3));
+        case PAYMENT:
+            return Optional.of(Long.valueOf(4));
+        default:
+            return Optional.empty();
+        }
     }
 }
 
