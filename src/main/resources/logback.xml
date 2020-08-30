@@ -3,9 +3,8 @@
 <configuration>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <withJansi>true</withJansi>
-        <encoder>
-            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%cyan(%d{HH:mm:ss.SSSXXX}) %gray([%-10.10thread]) %highlight(%-5.5level) %magenta(%-64.64logger) | %msg %red(%ex) %nopex %n</pattern>
         </encoder>
     </appender>
 
@@ -13,10 +12,10 @@
         <appender-ref ref="STDOUT" />
     </root>
 
+    <logger name="com.zaxxer.hikari" level="WARN" />
+    <logger name="org.apache.tomcat" level="WARN" />
     <logger name="org.hibernate" level="WARN" />
     <logger name="org.hibernate.SQL" level="DEBUG" />
     <logger name="org.hibernate.type.descriptor.sql" level="TRACE" />
-    <logger name="com.zaxxer.hikari" level="INFO" />
-    <logger name="org.apache.tomcat" level="INFO" />
 
 </configuration>

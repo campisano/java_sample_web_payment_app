@@ -1,6 +1,6 @@
 package org.example.java_sample_web_payment_app.adapters.controllers;
 
-import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +21,7 @@ public class HTTPExceptionsController {
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<CustomErrorResponse> handleNotFound(Exception exception, HttpServletRequest request) {
-        LOGGER.error("Request: {}, exception: {}", Objects.toString(request), exception.toString());
+        LOGGER.error("Request: {}, exception: {}", getRequestData(request), exception);
 
         CustomErrorResponse error = new CustomErrorResponse();
         error.message = "Not found: " + request.getRequestURI();
@@ -32,7 +32,7 @@ public class HTTPExceptionsController {
             HttpRequestMethodNotSupportedException.class })
     public ResponseEntity<CustomErrorResponse> handleJsonParserException(Exception exception,
             HttpServletRequest request) {
-        LOGGER.error("Request: {}, exception: {}", Objects.toString(request), exception.toString());
+        LOGGER.error("Request: {}, exception: {}", getRequestData(request), exception);
 
         CustomErrorResponse error = new CustomErrorResponse();
         error.message = "Bad request";
@@ -41,11 +41,19 @@ public class HTTPExceptionsController {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomErrorResponse> handleOthers(Exception exception, HttpServletRequest request) {
-        LOGGER.error("Request: {}, exception: {}", Objects.toString(request), exception.toString());
+        LOGGER.error("Request: {}, exception: {}", getRequestData(request), exception);
 
         CustomErrorResponse error = new CustomErrorResponse();
         error.message = "Internal server error";
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private String getRequestData(HttpServletRequest request) {
+        try {
+            return request.getReader().lines().collect(Collectors.joining());
+        } catch (Exception ex) {
+            return "[request not available]";
+        }
     }
 }
 
