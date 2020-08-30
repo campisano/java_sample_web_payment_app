@@ -32,6 +32,7 @@ public class CreateTransactionUsecaseTest {
         Transaction.Type foundType = Type.PAYMENT;
         Long foundTypeId = Long.valueOf(4);
         Long generatedTransactionId = Long.valueOf(1);
+
         AccountsRepositoryPort accountsRepo = Mockito.mock(AccountsRepositoryPort.class);
         Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
         TransactionsRepositoryPort transactionsRepo = Mockito.mock(TransactionsRepositoryPort.class);
@@ -57,7 +58,10 @@ public class CreateTransactionUsecaseTest {
                         && dto.operationTypeId.equals(Long.valueOf(4))
                         && dto.amount.equals(BigDecimal.valueOf(12345, 2))));
 
-        Mockito.verify(accountsRepo, Mockito.times(1)).update(Mockito.any());
+        Mockito.verify(accountsRepo, Mockito.times(1))
+                .update(Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
+                        && dto.documentNumber.contentEquals(foundAccount.documentNumber)
+                        && dto.creditLimit.equals(foundAccount.creditLimit.subtract(BigDecimal.valueOf(12345, 2)))));
         Mockito.verifyNoMoreInteractions(accountsRepo, transactionsRepo);
     }
 
