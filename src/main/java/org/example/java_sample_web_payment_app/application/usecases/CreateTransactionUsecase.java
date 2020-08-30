@@ -64,7 +64,7 @@ public class CreateTransactionUsecase implements CreateTransactionUsecasePort {
         LocalDateTime currentTime = timeRepository.getCurrentTime();
 
         Transaction transaction = new Transaction(transactionId, account, type.get(), new Money(amount), currentTime);
-        account.subtract(transaction.getAmount());
+        account.operate(transaction.getAmount());
 
         return transaction;
     }

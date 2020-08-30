@@ -43,12 +43,14 @@ public class Account {
         }
     }
 
-    public void subtract(Money amount) throws DomainValidationException {
-        if (creditLimit.getValue().compareTo(amount.getValue()) < 0) {
+    public void operate(Money amount) throws DomainValidationException {
+        Money result = new Money(creditLimit.getValue().add(amount.getValue()));
+
+        if (result.isNegative()) {
             throw new DomainValidationException("Subtraction of [{0}] cannot result in a negative amount",
                     amount.getValue());
         }
 
-        creditLimit = new Money(creditLimit.getValue().subtract(amount.getValue()));
+        creditLimit = result;
     }
 }
