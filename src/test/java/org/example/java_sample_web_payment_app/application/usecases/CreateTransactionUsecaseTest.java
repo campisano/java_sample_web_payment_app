@@ -34,35 +34,48 @@ public class CreateTransactionUsecaseTest {
         Long generatedTransactionId = Long.valueOf(1);
 
         AccountsRepositoryPort accountsRepo = Mockito.mock(AccountsRepositoryPort.class);
-        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
-        TransactionsRepositoryPort transactionsRepo = Mockito.mock(TransactionsRepositoryPort.class);
-        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.of(foundType));
-        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(Optional.of(foundTypeId));
-        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(generatedTransactionId);
         TimeRepositoryPort timeRepo = Mockito.mock(TimeRepositoryPort.class);
-        Mockito.when(timeRepo.getCurrentTime()).thenReturn(LocalDateTime.MIN);
-        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo, transactionsRepo, timeRepo);
+        TransactionsRepositoryPort transactionsRepo = Mockito.mock(TransactionsRepositoryPort.class);
 
+        // arrange output
+        {
+            Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
+            Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.of(foundType));
+            Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(Optional.of(foundTypeId));
+            Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(generatedTransactionId);
+            Mockito.when(timeRepo.getCurrentTime()).thenReturn(LocalDateTime.MIN);
+        }
+
+        // act
+        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo, transactionsRepo, timeRepo);
         usecase.execute(Long.valueOf(1), Long.valueOf(4), BigDecimal.valueOf(12345, 2));
 
-        Mockito.verify(accountsRepo, Mockito.times(1))
-                .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(Long.valueOf(1))));
-        Mockito.verify(transactionsRepo, Mockito.times(1))
-                .findTypeByTypeId(Mockito.argThat((Long operationId) -> operationId.equals(Long.valueOf(4))));
-        Mockito.verify(transactionsRepo, Mockito.times(1))
-                .findTypeIdByType(Mockito.argThat((Type operation) -> operation.equals(Type.PAYMENT)));
-        Mockito.verify(transactionsRepo, Mockito.times(1)).generateUniqueTransactionId();
+        // assert inputs
+        {
+            Mockito.verify(accountsRepo, Mockito.times(1))
+                    .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(Long.valueOf(1))));
+            Mockito.verify(transactionsRepo, Mockito.times(1))
+                    .findTypeByTypeId(Mockito.argThat((Long operationId) -> operationId.equals(Long.valueOf(4))));
+            Mockito.verify(transactionsRepo, Mockito.times(1))
+                    .findTypeIdByType(Mockito.argThat((Type operation) -> operation.equals(Type.PAYMENT)));
+            Mockito.verify(transactionsRepo, Mockito.times(1)).generateUniqueTransactionId();
+            Mockito.verify(timeRepo, Mockito.times(1)).getCurrentTime();
+        }
 
-        Mockito.verify(transactionsRepo, Mockito.times(1))
-                .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
-                        && dto.operationTypeId.equals(Long.valueOf(4))
-                        && dto.amount.equals(BigDecimal.valueOf(12345, 2))));
+        // assert changes
+        {
+            Mockito.verify(transactionsRepo, Mockito.times(1))
+                    .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
+                            && dto.operationTypeId.equals(Long.valueOf(4))
+                            && dto.amount.equals(BigDecimal.valueOf(12345, 2))));
 
-        Mockito.verify(accountsRepo, Mockito.times(1))
-                .update(Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
-                        && dto.documentNumber.contentEquals(foundAccount.documentNumber)
-                        && dto.creditLimit.equals(foundAccount.creditLimit.subtract(BigDecimal.valueOf(12345, 2)))));
-        Mockito.verifyNoMoreInteractions(accountsRepo, transactionsRepo);
+            Mockito.verify(accountsRepo, Mockito.times(1))
+                    .update(Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
+                            && dto.documentNumber.contentEquals(foundAccount.documentNumber) && dto.creditLimit
+                                    .equals(foundAccount.creditLimit.subtract(BigDecimal.valueOf(12345, 2)))));
+        }
+
+        Mockito.verifyNoMoreInteractions(accountsRepo, transactionsRepo, timeRepo);
     }
 
     @Test
