@@ -60,7 +60,7 @@ public class AccountTest {
     @Test
     public void test_subtract_to_negative() throws Exception {
         Assertions.assertThrows(DomainValidationException.class, () -> {
-            new Account(Long.valueOf(1), null, new Money(100)).subtract(new Money(101));
+            new Account(Long.valueOf(1), "document_number", new Money(100)).subtract(new Money(101));
         });
     }
 }

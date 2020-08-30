@@ -21,11 +21,15 @@ public class Money {
     }
 
     public boolean isPositive() {
-        return (value.compareTo(BigDecimal.ZERO) > 0);
+        return (value.compareTo(BigDecimal.ZERO) >= 0);
     }
 
     public boolean isNegative() {
         return !isPositive();
+    }
+
+    public boolean isZero() {
+        return (value.compareTo(BigDecimal.ZERO) == 0);
     }
 
     private void construct(BigDecimal value) throws DomainValidationException {
@@ -36,9 +40,6 @@ public class Money {
     private static void ensureCreable(BigDecimal value) throws DomainValidationException {
         if (value == null) {
             throw new DomainValidationException("Value 'null' is invalid");
-        }
-        if (value.compareTo(BigDecimal.ZERO) == 0) {
-            throw new DomainValidationException("Value 'zero' is invalid");
         }
     }
 
@@ -57,5 +58,10 @@ public class Money {
         }
         Money other = (Money) obj;
         return Objects.equals(value, other.value);
+    }
+
+    @Override
+    public String toString() {
+        return "Money [value=" + value + "]";
     }
 }

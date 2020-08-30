@@ -22,20 +22,6 @@ public class MoneyTest {
     }
 
     @Test
-    public void test_creation_zero_value() throws Exception {
-        Assertions.assertThrows(DomainValidationException.class, () -> {
-            new Money(BigDecimal.ZERO);
-        });
-    }
-
-    @Test
-    public void test_creation_zero_integer_value() throws Exception {
-        Assertions.assertThrows(DomainValidationException.class, () -> {
-            new Money(0);
-        });
-    }
-
-    @Test
     public void test_creation_null_number() throws Exception {
         Assertions.assertThrows(DomainValidationException.class, () -> {
             new Money(null);
@@ -71,5 +57,35 @@ public class MoneyTest {
         Object money2 = new Object();
 
         Assertions.assertFalse(money1.equals(money2));
+    }
+
+    @Test
+    public void test_is_positive() throws Exception {
+        Money money = new Money(new BigDecimal(1));
+
+        Assertions.assertTrue(money.isPositive());
+        Assertions.assertFalse(money.isNegative());
+    }
+
+    @Test
+    public void test_is_positive_zero() throws Exception {
+        Money money = new Money(new BigDecimal(0));
+
+        Assertions.assertTrue(money.isPositive());
+    }
+
+    @Test
+    public void test_is_zero() throws Exception {
+        Money money = new Money(new BigDecimal(0));
+
+        Assertions.assertTrue(money.isZero());
+    }
+
+    @Test
+    public void test_is_negative() throws Exception {
+        Money money = new Money(new BigDecimal(-1));
+
+        Assertions.assertTrue(money.isNegative());
+        Assertions.assertFalse(money.isPositive());
     }
 }
