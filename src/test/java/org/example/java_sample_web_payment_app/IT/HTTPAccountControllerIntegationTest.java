@@ -1,5 +1,6 @@
 package org.example.java_sample_web_payment_app.IT;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import org.example.java_sample_web_payment_app.adapters.controllers.requests.HTTPAccountsPostRequest;
@@ -39,6 +40,7 @@ public class HTTPAccountControllerIntegationTest {
         HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {
             {
                 documentNumber = "12345678900";
+                creditLimit = new BigDecimal(5000);
             }
         };
 
@@ -52,6 +54,7 @@ public class HTTPAccountControllerIntegationTest {
         HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {
             {
                 documentNumber = "12345678900";
+                creditLimit = new BigDecimal(5000);
             }
         };
         ResponseEntity<?> response1 = rest.postForEntity("/accounts", body, null);
@@ -76,6 +79,7 @@ public class HTTPAccountControllerIntegationTest {
         rest.postForEntity("/accounts", new HTTPAccountsPostRequest() {
             {
                 documentNumber = existingDocumentNumber;
+                creditLimit = new BigDecimal(5000);
             }
         }, null);
 

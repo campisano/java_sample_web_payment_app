@@ -7,7 +7,7 @@ public class AccountTest {
 
     @Test
     public void test_creation() throws Exception {
-        Account account = new Account(Long.valueOf(1), "document_number");
+        Account account = new Account(Long.valueOf(1), "document_number", new Money(5000));
 
         Assertions.assertEquals(Long.valueOf(1), account.getAccountId());
         Assertions.assertEquals("document_number", account.getDocumentNumber());
@@ -16,21 +16,35 @@ public class AccountTest {
     @Test
     public void test_creation_null_account_id() throws Exception {
         Assertions.assertThrows(DomainValidationException.class, () -> {
-            new Account(null, "document_number");
+            new Account(null, "document_number", new Money(5000));
         });
     }
 
     @Test
     public void test_creation_empty_document_number() throws Exception {
         Assertions.assertThrows(DomainValidationException.class, () -> {
-            new Account(Long.valueOf(1), "");
+            new Account(Long.valueOf(1), "", new Money(5000));
         });
     }
 
     @Test
     public void test_creation_null_document_number() throws Exception {
         Assertions.assertThrows(DomainValidationException.class, () -> {
-            new Account(Long.valueOf(1), null);
+            new Account(Long.valueOf(1), null, new Money(5000));
+        });
+    }
+
+    @Test
+    public void test_creation_null_credit_limit() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
+            new Account(Long.valueOf(1), "document_number", null);
+        });
+    }
+
+    @Test
+    public void test_creation_negative_credit_limit() throws Exception {
+        Assertions.assertThrows(DomainValidationException.class, () -> {
+            new Account(Long.valueOf(1), "document_number", new Money(-100));
         });
     }
 

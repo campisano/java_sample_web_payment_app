@@ -1,5 +1,6 @@
 package org.example.java_sample_web_payment_app.adapters.controllers;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,26 +25,26 @@ public class HTTPAccountsControllerTest {
     public void test_post() throws Exception {
         CreateAccountUsecasePort usecase = Mockito.mock(CreateAccountUsecasePort.class);
         HTTPAccountsController controller = new HTTPAccountsController(usecase, null);
-        HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {{ documentNumber = "12345678900"; }};
+        HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {{ documentNumber = "12345678900"; creditLimit = new BigDecimal(5000); }};
 
         ResponseEntity<?> response = controller.post(mockRequest(), Optional.of(body));
 
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any());
+        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any(), Mockito.any());
         Mockito.verifyNoMoreInteractions(usecase);
     }
 
     @Test
     public void test_post_exists() throws Exception {
         CreateAccountUsecasePort usecase = Mockito.mock(CreateAccountUsecasePort.class);
-        Mockito.doThrow(AccountAlreadyExistsException.class).when(usecase).execute(Mockito.any());
+        Mockito.doThrow(AccountAlreadyExistsException.class).when(usecase).execute(Mockito.any(), Mockito.any());
         HTTPAccountsController controller = new HTTPAccountsController(usecase, null);
-        HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {{ documentNumber = "12345678900"; }};
+        HTTPAccountsPostRequest body = new HTTPAccountsPostRequest() {{ documentNumber = "12345678900"; creditLimit = new BigDecimal(5000); }};
 
         ResponseEntity<?> response = controller.post(mockRequest(), Optional.of(body));
 
         Assertions.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
-        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any());
+        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any(), Mockito.any());
         Mockito.verifyNoMoreInteractions(usecase);
     }
 
@@ -55,13 +56,13 @@ public class HTTPAccountsControllerTest {
         ResponseEntity<?> response = controller.post(mockRequest(), Optional.empty());
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        Mockito.verify(usecase, Mockito.times(0)).execute(Mockito.any());
+        Mockito.verify(usecase, Mockito.times(0)).execute(Mockito.any(), Mockito.any());
         Mockito.verifyNoMoreInteractions(usecase);
     }
 
     @Test
     public void test_get() throws Exception {
-        AccountDTO expectedAccount = new AccountDTO() {{ accountId = Long.valueOf(1); documentNumber = "12345678900"; }};
+        AccountDTO expectedAccount = new AccountDTO() {{ accountId = Long.valueOf(1); documentNumber = "12345678900"; creditLimit = new BigDecimal(5000); }};
         RetrieveAccountUsecasePort usecase = Mockito.mock(RetrieveAccountUsecasePort.class);
         Mockito.doReturn(expectedAccount).when(usecase).execute(Mockito.any());
         HTTPAccountsController controller = new HTTPAccountsController(null, usecase);

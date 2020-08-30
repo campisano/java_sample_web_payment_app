@@ -39,6 +39,7 @@ public class HTTPTransactionControllerIntegationTest {
     public void test_post() throws Exception {
         HTTPAccountsPostRequest body1 = new HTTPAccountsPostRequest();
         body1.documentNumber = "12345678900";
+        body1.creditLimit = new BigDecimal(5000);
         ResponseEntity<?> response1 = rest.postForEntity("/accounts", body1, null);
         Assertions.assertEquals(HttpStatus.CREATED, response1.getStatusCode());
         HTTPTransactionsPostRequest body2 = new HTTPTransactionsPostRequest();

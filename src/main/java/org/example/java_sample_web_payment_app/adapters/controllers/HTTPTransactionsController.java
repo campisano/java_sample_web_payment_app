@@ -31,7 +31,7 @@ public class HTTPTransactionsController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<?> post(HttpServletRequest request, @RequestBody Optional<HTTPTransactionsPostRequest> body) {
-        LOGGER.info("method={}, path={}, body={}", request.getMethod(), request.getRequestURI(), body);
+        LOGGER.info("method={}, path={}, body={}", request.getMethod(), request.getRequestURI(), body.orElse(null));
 
         if (!body.isPresent()) {
             LOGGER.error("request without body");
@@ -40,8 +40,7 @@ public class HTTPTransactionsController {
 
         try {
             createTransactionUsecase.execute(body.get().accountId, body.get().operationTypeId, body.get().amount);
-            LOGGER.info("created, accountId={}, operationTypeId={}, amount={}", body.get().accountId,
-                    body.get().operationTypeId, body.get().amount);
+            LOGGER.info("created, request={}", body.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
 
         } catch (DomainValidationException exception) {
