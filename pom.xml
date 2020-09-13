@@ -10,7 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>11</java.version>
+        <java.version>14</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
@@ -129,8 +129,8 @@
                     <includes>
                         <include>%regex[.*]</include>
                     </includes>
-                    <!-- the @{argLine} is needed for proper jacoco execution -->
-                    <argLine>@{argLine} -Xmx256m</argLine>
+                    <argLine>-Xms128m -Xmx2G -XX:MaxPermSize=1G</argLine>
+                    <argLine>${surefireArgLine}</argLine>
                 </configuration>
             </plugin>
 
@@ -151,6 +151,9 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <propertyName>surefireArgLine</propertyName>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

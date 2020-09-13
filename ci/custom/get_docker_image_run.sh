@@ -2,6 +2,6 @@
 
 set -o errexit -o nounset -o pipefail
 
-IMAGE="openjdk:11-jre-slim-stretch"
+IMAGE="openjdk:14-jre-slim-stretch"
 
 echo "${IMAGE}"
