@@ -35,7 +35,8 @@ public class CreateTransactionUsecaseTest {
 
     @AfterEach
     private void noMoreMockInterations() {
-        Mockito.verifyNoMoreInteractions(Mockito.ignoreStubs(accountsRepo, transactionsRepo, timeRepo));
+        Mockito.verifyNoMoreInteractions(Mockito.ignoreStubs(accountsRepo,
+                                         transactionsRepo, timeRepo));
     }
 
     @Test
@@ -51,40 +52,52 @@ public class CreateTransactionUsecaseTest {
         Transaction.Type foundType = Type.CASH;
         Long foundTypeId = Long.valueOf(1);
 
-        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
-        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.of(foundType));
-        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(Optional.of(foundTypeId));
-        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(Long.valueOf(1));
+        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(
+            Optional.of(foundAccount));
+        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(
+            Optional.of(foundType));
+        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(
+            Optional.of(foundTypeId));
+        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(
+            Long.valueOf(1));
         Mockito.when(timeRepo.getCurrentTime()).thenReturn(LocalDateTime.MIN);
 
         // act
         {
-            CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo, transactionsRepo, timeRepo);
-            usecase.execute(Long.valueOf(1), Long.valueOf(1), BigDecimal.valueOf(-12345, 2));
+            CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo,
+                    transactionsRepo, timeRepo);
+            usecase.execute(Long.valueOf(1), Long.valueOf(1), BigDecimal.valueOf(-12345,
+                            2));
         }
 
         // assert inputs
         {
             Mockito.verify(accountsRepo, Mockito.times(1))
-                    .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(Long.valueOf(1))));
+            .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(
+                                                 Long.valueOf(1))));
             Mockito.verify(transactionsRepo, Mockito.times(1))
-                    .findTypeByTypeId(Mockito.argThat((Long operationId) -> operationId.equals(Long.valueOf(1))));
+            .findTypeByTypeId(Mockito.argThat((Long operationId) -> operationId.equals(
+                                                  Long.valueOf(1))));
             Mockito.verify(transactionsRepo, Mockito.times(1))
-                    .findTypeIdByType(Mockito.argThat((Type operation) -> operation.equals(Type.CASH)));
-            Mockito.verify(transactionsRepo, Mockito.times(1)).generateUniqueTransactionId();
+            .findTypeIdByType(Mockito.argThat((Type operation) -> operation.equals(
+                                                  Type.CASH)));
+            Mockito.verify(transactionsRepo,
+                           Mockito.times(1)).generateUniqueTransactionId();
             Mockito.verify(timeRepo, Mockito.times(1)).getCurrentTime();
         }
 
         // assert changes
         {
             Mockito.verify(transactionsRepo, Mockito.times(1))
-                    .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
-                            && dto.operationTypeId.equals(Long.valueOf(1))
-                            && dto.amount.equals(BigDecimal.valueOf(-12345, 2))
-                            && dto.eventDate.equals(LocalDateTime.MIN)),
-                            Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
-                                    && dto.documentNumber.contentEquals(foundAccount.documentNumber) && dto.creditLimit
-                                            .equals(foundAccount.creditLimit.subtract(BigDecimal.valueOf(12345, 2)))));
+            .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(
+                                     1))
+                                 && dto.operationTypeId.equals(Long.valueOf(1))
+                                 && dto.amount.equals(BigDecimal.valueOf(-12345, 2))
+                                 && dto.eventDate.equals(LocalDateTime.MIN)),
+                 Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
+                                 && dto.documentNumber.contentEquals(foundAccount.documentNumber)
+                                 && dto.creditLimit
+                                 .equals(foundAccount.creditLimit.subtract(BigDecimal.valueOf(12345, 2)))));
         }
     }
 
@@ -101,53 +114,67 @@ public class CreateTransactionUsecaseTest {
         Transaction.Type foundType = Type.PAYMENT;
         Long foundTypeId = Long.valueOf(4);
 
-        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
-        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.of(foundType));
-        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(Optional.of(foundTypeId));
-        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(Long.valueOf(1));
+        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(
+            Optional.of(foundAccount));
+        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(
+            Optional.of(foundType));
+        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(
+            Optional.of(foundTypeId));
+        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(
+            Long.valueOf(1));
         Mockito.when(timeRepo.getCurrentTime()).thenReturn(LocalDateTime.MIN);
 
         // act
         {
-            CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo, transactionsRepo, timeRepo);
+            CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo,
+                    transactionsRepo, timeRepo);
             usecase.execute(Long.valueOf(1), Long.valueOf(4), BigDecimal.valueOf(12345, 2));
         }
 
         // assert inputs
         {
             Mockito.verify(accountsRepo, Mockito.times(1))
-                    .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(Long.valueOf(1))));
+            .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(
+                                                 Long.valueOf(1))));
             Mockito.verify(transactionsRepo, Mockito.times(1))
-                    .findTypeByTypeId(Mockito.argThat((Long operationId) -> operationId.equals(Long.valueOf(4))));
+            .findTypeByTypeId(Mockito.argThat((Long operationId) -> operationId.equals(
+                                                  Long.valueOf(4))));
             Mockito.verify(transactionsRepo, Mockito.times(1))
-                    .findTypeIdByType(Mockito.argThat((Type operation) -> operation.equals(Type.PAYMENT)));
-            Mockito.verify(transactionsRepo, Mockito.times(1)).generateUniqueTransactionId();
+            .findTypeIdByType(Mockito.argThat((Type operation) -> operation.equals(
+                                                  Type.PAYMENT)));
+            Mockito.verify(transactionsRepo,
+                           Mockito.times(1)).generateUniqueTransactionId();
             Mockito.verify(timeRepo, Mockito.times(1)).getCurrentTime();
         }
 
         // assert changes
         {
             Mockito.verify(transactionsRepo, Mockito.times(1))
-                    .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
-                            && dto.operationTypeId.equals(Long.valueOf(4))
-                            && dto.amount.equals(BigDecimal.valueOf(12345, 2))
-                            && dto.eventDate.equals(LocalDateTime.MIN)),
-                            Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
-                                    && dto.documentNumber.contentEquals(foundAccount.documentNumber) && dto.creditLimit
-                                            .equals(foundAccount.creditLimit.add(BigDecimal.valueOf(12345, 2)))));
+            .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(
+                                     1))
+                                 && dto.operationTypeId.equals(Long.valueOf(4))
+                                 && dto.amount.equals(BigDecimal.valueOf(12345, 2))
+                                 && dto.eventDate.equals(LocalDateTime.MIN)),
+                 Mockito.argThat((AccountDTO dto) -> dto.accountId.equals(foundAccount.accountId)
+                                 && dto.documentNumber.contentEquals(foundAccount.documentNumber)
+                                 && dto.creditLimit
+                                 .equals(foundAccount.creditLimit.add(BigDecimal.valueOf(12345, 2)))));
         }
     }
 
     @Test
     public void test_execute_account_not_exists() throws Exception {
-        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(
+            Optional.empty());
 
-        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo, transactionsRepo, timeRepo);
+        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo,
+                transactionsRepo, timeRepo);
         Assertions.assertThrows(AccountIdNotExistsException.class, () -> {
             usecase.execute(Long.valueOf(1), Long.valueOf(4), BigDecimal.valueOf(12345, 2));
         });
 
-        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(), Mockito.any());
+        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(),
+                Mockito.any());
     }
 
     @Test
@@ -160,15 +187,19 @@ public class CreateTransactionUsecaseTest {
             }
         };
 
-        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
-        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(
+            Optional.of(foundAccount));
+        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(
+            Optional.empty());
 
-        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo, transactionsRepo, timeRepo);
+        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo,
+                transactionsRepo, timeRepo);
         Assertions.assertThrows(OperationTypeIdNotExistsException.class, () -> {
             usecase.execute(Long.valueOf(1), Long.valueOf(4), BigDecimal.valueOf(12345, 2));
         });
 
-        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(), Mockito.any());
+        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(),
+                Mockito.any());
     }
 
     @Test
@@ -183,19 +214,27 @@ public class CreateTransactionUsecaseTest {
         Transaction.Type foundType = Type.CASH;
         Long foundTypeId = Long.valueOf(1);
 
-        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
-        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.of(foundType));
-        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(Optional.of(foundTypeId));
-        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(Long.valueOf(1));
+        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(
+            Optional.of(foundAccount));
+        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(
+            Optional.of(foundType));
+        Mockito.when(transactionsRepo.findTypeIdByType(Mockito.any())).thenReturn(
+            Optional.of(foundTypeId));
+        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(
+            Long.valueOf(1));
         Mockito.when(timeRepo.getCurrentTime()).thenReturn(LocalDateTime.MIN);
 
-        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo, transactionsRepo, timeRepo);
+        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo,
+                transactionsRepo, timeRepo);
         usecase.execute(Long.valueOf(1), Long.valueOf(1), BigDecimal.valueOf(-30));
 
         Mockito.verify(transactionsRepo, Mockito.times(1))
-                .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(1))
-                        && dto.operationTypeId.equals(Long.valueOf(1)) && dto.amount.equals(BigDecimal.valueOf(-30))),
-                        Mockito.argThat((AccountDTO account) -> account.creditLimit.equals(BigDecimal.valueOf(70))));
+        .add(Mockito.argThat((TransactionDTO dto) -> dto.accountId.equals(Long.valueOf(
+                                 1))
+                             && dto.operationTypeId.equals(Long.valueOf(1))
+                             && dto.amount.equals(BigDecimal.valueOf(-30))),
+             Mockito.argThat((AccountDTO account) -> account.creditLimit.equals(
+                                 BigDecimal.valueOf(70))));
     }
 
     @Test
@@ -210,16 +249,21 @@ public class CreateTransactionUsecaseTest {
         Transaction.Type foundType = Type.CASH;
         Long generatedTransactionId = Long.valueOf(1);
 
-        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
-        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(Optional.of(foundType));
-        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(generatedTransactionId);
+        Mockito.when(accountsRepo.findByAccountId(Mockito.any())).thenReturn(
+            Optional.of(foundAccount));
+        Mockito.when(transactionsRepo.findTypeByTypeId(Mockito.any())).thenReturn(
+            Optional.of(foundType));
+        Mockito.when(transactionsRepo.generateUniqueTransactionId()).thenReturn(
+            generatedTransactionId);
         Mockito.when(timeRepo.getCurrentTime()).thenReturn(LocalDateTime.MIN);
 
-        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo, transactionsRepo, timeRepo);
+        CreateTransactionUsecase usecase = new CreateTransactionUsecase(accountsRepo,
+                transactionsRepo, timeRepo);
         Assertions.assertThrows(DomainValidationException.class, () -> {
             usecase.execute(Long.valueOf(1), Long.valueOf(1), BigDecimal.valueOf(-80));
         });
 
-        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(), Mockito.any());
+        Mockito.verify(transactionsRepo, Mockito.times(0)).add(Mockito.any(),
+                Mockito.any());
     }
 }

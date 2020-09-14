@@ -12,6 +12,7 @@ public class HTTPAccountsPostRequest {
 
     @Override
     public String toString() {
-        return getClass().getName() + " [documentNumber=" + documentNumber + ", creditLimit=" + creditLimit + "]";
+        return getClass().getName() + " [documentNumber=" + documentNumber +
+               ", creditLimit=" + creditLimit + "]";
     }
 }

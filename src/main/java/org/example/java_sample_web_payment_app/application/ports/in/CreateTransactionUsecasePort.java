@@ -9,5 +9,6 @@ import org.example.java_sample_web_payment_app.domain.DomainValidationException;
 public interface CreateTransactionUsecasePort {
 
     void execute(Long accountId, Long operationTypeId, BigDecimal amount)
-            throws DomainValidationException, AccountIdNotExistsException, OperationTypeIdNotExistsException;
+    throws DomainValidationException, AccountIdNotExistsException,
+               OperationTypeIdNotExistsException;
 }

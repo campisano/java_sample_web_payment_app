@@ -13,7 +13,8 @@ public class HTTPAccountsGetResponse {
 
     @Override
     public String toString() {
-        return getClass().getName() + " [accountId=" + accountId + ", documentNumber=" + documentNumber
-                + ", creditLimit=" + creditLimit + "]";
+        return getClass().getName() + " [accountId=" + accountId + ", documentNumber=" +
+               documentNumber
+               + ", creditLimit=" + creditLimit + "]";
     }
 }

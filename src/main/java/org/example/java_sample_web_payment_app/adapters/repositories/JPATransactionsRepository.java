@@ -20,8 +20,9 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
     private SpringJPATransactionsRepository transactionsRepo;
     private JPAAccountsRepository accountsRepo;
 
-    public JPATransactionsRepository(SpringJPATransactionsRepository transactionsRepo,
-            JPAAccountsRepository accountsRepo) {
+    public JPATransactionsRepository(SpringJPATransactionsRepository
+                                     transactionsRepo,
+                                     JPAAccountsRepository accountsRepo) {
         this.transactionsRepo = transactionsRepo;
         this.accountsRepo = accountsRepo;
     }
@@ -34,7 +35,8 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
     @Override
     @Transactional
     public void add(TransactionDTO transaction, AccountDTO account) {
-        TransactionModel model = new TransactionModel(transaction.transactionId, transaction.accountId,
+        TransactionModel model = new TransactionModel(transaction.transactionId,
+                transaction.accountId,
                 transaction.operationTypeId, transaction.amount, transaction.eventDate);
         transactionsRepo.save(model);
         accountsRepo.update(account);
@@ -42,7 +44,7 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
 
     @Override
     public Optional<Type> findTypeByTypeId(Long operationTypeId) {
-        switch (operationTypeId.intValue()) {
+        switch(operationTypeId.intValue()) {
         case 1:
             return Optional.of(Transaction.Type.CASH);
         case 2:
@@ -58,7 +60,7 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
 
     @Override
     public Optional<Long> findTypeIdByType(Type type) {
-        switch (type) {
+        switch(type) {
         case CASH:
             return Optional.of(Long.valueOf(1));
         case INSTALLMENT:
@@ -75,9 +77,10 @@ public class JPATransactionsRepository implements TransactionsRepositoryPort {
 
 @Repository
 interface SpringJPATransactionsRepository
-        extends org.springframework.data.repository.Repository<TransactionModel, Long> {
+    extends org.springframework.data.repository.Repository<TransactionModel, Long> {
 
-    @Query(value = "SELECT nextval('" + TransactionModel.ID_SEQ_NAME + "')", nativeQuery = true)
+    @Query(value = "SELECT nextval('" + TransactionModel.ID_SEQ_NAME + "')",
+           nativeQuery = true)
     Long getNextTransactionId();
 
     TransactionModel save(TransactionModel model);

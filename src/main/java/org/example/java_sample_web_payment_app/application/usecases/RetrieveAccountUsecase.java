@@ -20,7 +20,7 @@ public class RetrieveAccountUsecase implements RetrieveAccountUsecasePort {
 
         Optional<AccountDTO> account = accountsRepository.findByAccountId(accountId);
 
-        if (account.isEmpty()) {
+        if(account.isEmpty()) {
             throw new AccountIdNotExistsException(accountId);
         }
 

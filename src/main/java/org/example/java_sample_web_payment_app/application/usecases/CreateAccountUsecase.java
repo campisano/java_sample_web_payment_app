@@ -20,14 +20,15 @@ public class CreateAccountUsecase implements CreateAccountUsecasePort {
 
     @Override
     public void execute(String documentNumber, BigDecimal creditLimit)
-            throws DomainValidationException, AccountAlreadyExistsException {
+    throws DomainValidationException, AccountAlreadyExistsException {
 
-        if (accountsRepository.existsDocumentNumber(documentNumber)) {
+        if(accountsRepository.existsDocumentNumber(documentNumber)) {
             throw new AccountAlreadyExistsException(documentNumber);
         }
 
         Long accountId = accountsRepository.generateUniqueAccountId();
-        Account account = new Account(accountId, documentNumber, new Money(creditLimit));
+        Account account = new Account(accountId, documentNumber,
+                                      new Money(creditLimit));
 
         AccountDTO dto = new AccountDTO();
         dto.accountId = account.getAccountId();

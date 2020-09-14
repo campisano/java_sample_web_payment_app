@@ -35,7 +35,8 @@ class SpringRetrieveAccountUsecase extends RetrieveAccountUsecase {
 @Service
 class SpringCreateTransactionUseCase extends CreateTransactionUsecase {
     public SpringCreateTransactionUseCase(AccountsRepositoryPort accountsRepository,
-            TransactionsRepositoryPort transactionsRepository, TimeRepositoryPort timeRepository) {
+                                          TransactionsRepositoryPort transactionsRepository,
+                                          TimeRepositoryPort timeRepository) {
         super(accountsRepository, transactionsRepository, timeRepository);
     }
 }

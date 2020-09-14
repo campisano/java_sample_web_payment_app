@@ -27,7 +27,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class HTTPExceptionsControllerIntegationTest {
 
     @Container
-    public static final PostgreSQLContainer<?> postgresContainer = CustomPostgresqlContainer.getInstance();
+    public static final PostgreSQLContainer<?> postgresContainer =
+        CustomPostgresqlContainer.getInstance();
 
     @Autowired
     private TestRestTemplate rest;
@@ -41,7 +42,8 @@ public class HTTPExceptionsControllerIntegationTest {
 
     @Test
     public void test_bad_request() throws Exception {
-        ResponseEntity<?> response = rest.exchange("/accounts", HttpMethod.POST, HttpEntity.EMPTY, Object.class);
+        ResponseEntity<?> response = rest.exchange("/accounts", HttpMethod.POST,
+                                     HttpEntity.EMPTY, Object.class);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }

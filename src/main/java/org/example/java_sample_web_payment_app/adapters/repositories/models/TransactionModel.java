@@ -13,7 +13,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "transactions")
-@SequenceGenerator(name = TransactionModel.ID_SEQ_GEN, sequenceName = TransactionModel.ID_SEQ_NAME, initialValue = 1, allocationSize = 1)
+@SequenceGenerator(name = TransactionModel.ID_SEQ_GEN,
+                   sequenceName = TransactionModel.ID_SEQ_NAME, initialValue = 1,
+                   allocationSize = 1)
 public class TransactionModel {
     public final static String ID_SEQ_NAME = "transactions_transaction_id_seq";
     protected final static String ID_SEQ_GEN = ID_SEQ_NAME + "_gen";
@@ -23,7 +25,8 @@ public class TransactionModel {
     private Long id;
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQ_GEN)
-    @Column(columnDefinition = "bigserial", nullable = false, unique = true, updatable = true)
+    @Column(columnDefinition = "bigserial", nullable = false, unique = true,
+            updatable = true)
     private Long transactionId;
 
     @Column(columnDefinition = "bigint", nullable = false)
@@ -41,8 +44,9 @@ public class TransactionModel {
     TransactionModel() {
     }
 
-    public TransactionModel(Long transactionId, Long accountId, Long operationTypeId, BigDecimal amount,
-            LocalDateTime eventDate) {
+    public TransactionModel(Long transactionId, Long accountId,
+                            Long operationTypeId, BigDecimal amount,
+                            LocalDateTime eventDate) {
         this.transactionId = transactionId;
         this.accountId = accountId;
         this.operationTypeId = operationTypeId;

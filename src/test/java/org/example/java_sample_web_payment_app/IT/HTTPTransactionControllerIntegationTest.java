@@ -30,7 +30,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class HTTPTransactionControllerIntegationTest {
 
     @Container
-    public static final PostgreSQLContainer<?> postgresContainer = CustomPostgresqlContainer.getInstance();
+    public static final PostgreSQLContainer<?> postgresContainer =
+        CustomPostgresqlContainer.getInstance();
 
     @Autowired
     private TestRestTemplate rest;
@@ -66,7 +67,8 @@ public class HTTPTransactionControllerIntegationTest {
 
     @Test
     public void test_post_empty() throws Exception {
-        ResponseEntity<?> response = rest.postForEntity("/transactions", Optional.empty(), null);
+        ResponseEntity<?> response = rest.postForEntity("/transactions",
+                                     Optional.empty(), null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }

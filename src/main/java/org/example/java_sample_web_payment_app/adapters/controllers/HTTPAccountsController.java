@@ -25,22 +25,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/accounts")
 public class HTTPAccountsController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HTTPAccountsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+            HTTPAccountsController.class);
 
     private CreateAccountUsecasePort createAccountUsecase;
     private RetrieveAccountUsecasePort retrieveAccountUsecase;
 
     public HTTPAccountsController(CreateAccountUsecasePort createAccountUsecase,
-            RetrieveAccountUsecasePort retrieveAccountUsecase) {
+                                  RetrieveAccountUsecasePort retrieveAccountUsecase) {
         this.createAccountUsecase = createAccountUsecase;
         this.retrieveAccountUsecase = retrieveAccountUsecase;
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<?> post(HttpServletRequest request, @RequestBody Optional<HTTPAccountsPostRequest> body) {
-        LOGGER.info("method={}, path={}, body={}", request.getMethod(), request.getRequestURI(), body.orElse(null));
+    public ResponseEntity<?> post(HttpServletRequest request,
+                                  @RequestBody Optional<HTTPAccountsPostRequest> body) {
+        LOGGER.info("method={}, path={}, body={}", request.getMethod(),
+                    request.getRequestURI(), body.orElse(null));
 
-        if (!body.isPresent()) {
+        if(!body.isPresent()) {
             LOGGER.error("request without body");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -49,27 +52,30 @@ public class HTTPAccountsController {
             createAccountUsecase.execute(body.get().documentNumber, body.get().creditLimit);
             LOGGER.info("created, request={}", body.get());
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
-        } catch (DomainValidationException exception) {
+        } catch(DomainValidationException exception) {
             LOGGER.error("exception, message={}", exception.getMessage());
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(null);
-        } catch (AccountAlreadyExistsException exception) {
+        } catch(AccountAlreadyExistsException exception) {
             LOGGER.error("exception, message={}", exception.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
     }
 
     @RequestMapping(value = "{accountId}", method = RequestMethod.GET)
-    public ResponseEntity<HTTPAccountsGetResponse> get(HttpServletRequest request, @PathVariable Long accountId) {
-        LOGGER.info("method={}, path={}, accountId={}", request.getMethod(), request.getRequestURI(), accountId);
+    public ResponseEntity<HTTPAccountsGetResponse> get(HttpServletRequest request,
+            @PathVariable Long accountId) {
+        LOGGER.info("method={}, path={}, accountId={}", request.getMethod(),
+                    request.getRequestURI(), accountId);
 
-        if (accountId == null || accountId.longValue() <= 0) {
+        if(accountId == null || accountId.longValue() <= 0) {
             LOGGER.error("request without accountId");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         try {
             AccountDTO dto = retrieveAccountUsecase.execute(accountId);
-            LOGGER.info("retrieved, accountId={}, documentNumber={}", dto.accountId, dto.documentNumber);
+            LOGGER.info("retrieved, accountId={}, documentNumber={}", dto.accountId,
+                        dto.documentNumber);
             return ResponseEntity.status(HttpStatus.OK).body(new HTTPAccountsGetResponse() {
                 {
                     accountId = dto.accountId;
@@ -77,7 +83,7 @@ public class HTTPAccountsController {
                     creditLimit = dto.creditLimit;
                 }
             });
-        } catch (AccountIdNotExistsException exception) {
+        } catch(AccountIdNotExistsException exception) {
             LOGGER.error("exception, message={}", exception.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }

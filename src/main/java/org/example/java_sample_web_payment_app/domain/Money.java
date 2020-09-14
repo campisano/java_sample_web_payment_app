@@ -37,8 +37,9 @@ public class Money {
         this.value = value;
     }
 
-    private static void ensureCreable(BigDecimal value) throws DomainValidationException {
-        if (value == null) {
+    private static void ensureCreable(BigDecimal value) throws
+        DomainValidationException {
+        if(value == null) {
             throw new DomainValidationException("Value 'null' is invalid");
         }
     }
@@ -50,10 +51,10 @@ public class Money {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if(this == obj) {
             return true;
         }
-        if (!(obj instanceof Money)) {
+        if(!(obj instanceof Money)) {
             return false;
         }
         Money other = (Money) obj;

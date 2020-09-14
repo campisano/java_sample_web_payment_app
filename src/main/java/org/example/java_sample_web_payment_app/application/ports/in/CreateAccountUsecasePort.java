@@ -8,5 +8,5 @@ import org.example.java_sample_web_payment_app.domain.DomainValidationException;
 public interface CreateAccountUsecasePort {
 
     void execute(String documentNumber, BigDecimal creditLimit)
-            throws DomainValidationException, AccountAlreadyExistsException;
+    throws DomainValidationException, AccountAlreadyExistsException;
 }

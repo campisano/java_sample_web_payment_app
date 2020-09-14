@@ -46,13 +46,15 @@ public class HTTPTransactionsControllerTest {
         ResponseEntity<?> response = controller.post(mockRequest(), Optional.of(body));
 
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any(), Mockito.any(),
+                Mockito.any());
     }
 
     @Test
     public void test_post_account_not_exists() throws Exception {
-        Mockito.doThrow(AccountIdNotExistsException.class).when(usecase).execute(Mockito.any(), Mockito.any(),
-                Mockito.any());
+        Mockito.doThrow(AccountIdNotExistsException.class).when(usecase).execute(
+            Mockito.any(), Mockito.any(),
+            Mockito.any());
         HTTPTransactionsController controller = new HTTPTransactionsController(usecase);
         HTTPTransactionsPostRequest body = new HTTPTransactionsPostRequest() {
             {
@@ -66,13 +68,15 @@ public class HTTPTransactionsControllerTest {
 
         Assertions.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         Assertions.assertFalse(response.hasBody());
-        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any(), Mockito.any(),
+                Mockito.any());
     }
 
     @Test
     public void test_post_operation_not_exists() throws Exception {
-        Mockito.doThrow(OperationTypeIdNotExistsException.class).when(usecase).execute(Mockito.any(), Mockito.any(),
-                Mockito.any());
+        Mockito.doThrow(OperationTypeIdNotExistsException.class).when(usecase).execute(
+            Mockito.any(), Mockito.any(),
+            Mockito.any());
         HTTPTransactionsController controller = new HTTPTransactionsController(usecase);
         HTTPTransactionsPostRequest body = new HTTPTransactionsPostRequest() {
             {
@@ -86,7 +90,8 @@ public class HTTPTransactionsControllerTest {
 
         Assertions.assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         Assertions.assertFalse(response.hasBody());
-        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.verify(usecase, Mockito.times(1)).execute(Mockito.any(), Mockito.any(),
+                Mockito.any());
     }
 
     private HttpServletRequest mockRequest() {

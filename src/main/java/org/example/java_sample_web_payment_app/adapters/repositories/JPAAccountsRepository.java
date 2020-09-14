@@ -30,7 +30,8 @@ public class JPAAccountsRepository implements AccountsRepositoryPort {
 
     @Override
     public void add(AccountDTO account) {
-        AccountModel model = new AccountModel(account.accountId, account.documentNumber, account.creditLimit);
+        AccountModel model = new AccountModel(account.accountId, account.documentNumber,
+                                              account.creditLimit);
         repository.save(model);
     }
 
@@ -38,7 +39,7 @@ public class JPAAccountsRepository implements AccountsRepositoryPort {
     public Optional<AccountDTO> findByAccountId(Long accountId) {
         Optional<AccountModel> account = repository.findByAccountId(accountId);
 
-        if (account.isEmpty()) {
+        if(account.isEmpty()) {
             return Optional.empty();
         }
 
@@ -61,9 +62,11 @@ public class JPAAccountsRepository implements AccountsRepositoryPort {
 }
 
 @Repository
-interface SpringJPAAccountsRepository extends org.springframework.data.repository.Repository<AccountModel, Long> {
+interface SpringJPAAccountsRepository extends
+    org.springframework.data.repository.Repository<AccountModel, Long> {
 
-    @Query(value = "SELECT nextval('" + AccountModel.ID_SEQ_NAME + "')", nativeQuery = true)
+    @Query(value = "SELECT nextval('" + AccountModel.ID_SEQ_NAME + "')",
+           nativeQuery = true)
     Long getNextAccountId();
 
     boolean existsByDocumentNumber(String documentNumber);

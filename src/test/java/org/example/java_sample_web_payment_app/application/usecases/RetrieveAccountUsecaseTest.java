@@ -28,8 +28,14 @@ public class RetrieveAccountUsecaseTest {
     @Test
     public void test_execute() throws Exception {
         Long inputAccountId = Long.valueOf(1);
-        AccountDTO foundAccount = new AccountDTO() {{ accountId = Long.valueOf(1); documentNumber = "document_number"; }};
-        Mockito.when(repository.findByAccountId(Mockito.any())).thenReturn(Optional.of(foundAccount));
+        AccountDTO foundAccount = new AccountDTO() {
+            {
+                accountId = Long.valueOf(1);
+                documentNumber = "document_number";
+            }
+        };
+        Mockito.when(repository.findByAccountId(Mockito.any())).thenReturn(Optional.of(
+                    foundAccount));
         RetrieveAccountUsecase usecase = new RetrieveAccountUsecase(repository);
 
         AccountDTO account = usecase.execute(inputAccountId);
@@ -37,13 +43,15 @@ public class RetrieveAccountUsecaseTest {
         Assertions.assertEquals(inputAccountId, account.accountId);
 
         Mockito.verify(repository, Mockito.times(1))
-                .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(inputAccountId)));
+        .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(
+                                             inputAccountId)));
     }
 
     @Test
     public void test_execute_not_exists() throws Exception {
         Long inputAccountId = Long.valueOf(1);
-        Mockito.when(repository.findByAccountId(Mockito.any())).thenReturn(Optional.empty());
+        Mockito.when(repository.findByAccountId(Mockito.any())).thenReturn(
+            Optional.empty());
         RetrieveAccountUsecase usecase = new RetrieveAccountUsecase(repository);
 
         Assertions.assertThrows(AccountIdNotExistsException.class, () -> {
@@ -51,6 +59,7 @@ public class RetrieveAccountUsecaseTest {
         });
 
         Mockito.verify(repository, Mockito.times(1))
-                .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(inputAccountId)));
+        .findByAccountId(Mockito.argThat((Long accountId) -> accountId.equals(
+                                             inputAccountId)));
     }
 }

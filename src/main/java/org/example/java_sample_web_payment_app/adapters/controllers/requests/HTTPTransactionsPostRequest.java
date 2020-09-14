@@ -13,7 +13,8 @@ public class HTTPTransactionsPostRequest {
 
     @Override
     public String toString() {
-        return getClass().getName() + " [accountId=" + accountId + ", operationTypeId=" + operationTypeId + ", amount="
-                + amount + "]";
+        return getClass().getName() + " [accountId=" + accountId + ", operationTypeId="
+               + operationTypeId + ", amount="
+               + amount + "]";
     }
 }

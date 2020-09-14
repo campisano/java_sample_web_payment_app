@@ -5,7 +5,8 @@ public class Account {
     private String documentNumber;
     private Money creditLimit;
 
-    public Account(Long accountId, String documentNumber, Money creditLimit) throws DomainValidationException {
+    public Account(Long accountId, String documentNumber,
+                   Money creditLimit) throws DomainValidationException {
         ensureCreable(accountId, documentNumber, creditLimit);
         this.accountId = accountId;
         this.documentNumber = documentNumber;
@@ -24,31 +25,35 @@ public class Account {
         return creditLimit;
     }
 
-    private static void ensureCreable(Long accountId, String documentNumber, Money creditLimit)
-            throws DomainValidationException {
-        if (accountId == null) {
+    private static void ensureCreable(Long accountId, String documentNumber,
+                                      Money creditLimit)
+    throws DomainValidationException {
+        if(accountId == null) {
             throw new DomainValidationException("Account id [{0}] is invalid", accountId);
         }
 
-        if (documentNumber == null || documentNumber.length() == 0) {
-            throw new DomainValidationException("Document number [{0}] is invalid", documentNumber);
+        if(documentNumber == null || documentNumber.length() == 0) {
+            throw new DomainValidationException("Document number [{0}] is invalid",
+                                                documentNumber);
         }
 
-        if (creditLimit == null) {
-            throw new DomainValidationException("Credit limit [{0}] is invalid", creditLimit);
+        if(creditLimit == null) {
+            throw new DomainValidationException("Credit limit [{0}] is invalid",
+                                                creditLimit);
         }
 
-        if (creditLimit.isNegative()) {
-            throw new DomainValidationException("Negative credit limit [{0}] is invalid", creditLimit);
+        if(creditLimit.isNegative()) {
+            throw new DomainValidationException("Negative credit limit [{0}] is invalid",
+                                                creditLimit);
         }
     }
 
     public void operate(Money amount) throws DomainValidationException {
         Money result = new Money(creditLimit.getValue().add(amount.getValue()));
 
-        if (result.isNegative()) {
+        if(result.isNegative()) {
             throw new DomainValidationException("Subtraction of [{0}] cannot result in a negative amount",
-                    amount.getValue());
+                                                amount.getValue());
         }
 
         creditLimit = result;

@@ -17,10 +17,12 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
 public class HTTPExceptionsController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HTTPExceptionsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+            HTTPExceptionsController.class);
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<CustomErrorResponse> handleNotFound(Exception exception, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorResponse> handleNotFound(Exception exception,
+            HttpServletRequest request) {
         LOGGER.error("Request: {}, exception: {}", getRequestData(request), exception);
 
         CustomErrorResponse error = new CustomErrorResponse();
@@ -29,9 +31,11 @@ public class HTTPExceptionsController {
     }
 
     @ExceptionHandler({ HttpMessageNotReadableException.class, HttpMediaTypeNotSupportedException.class,
-            HttpRequestMethodNotSupportedException.class })
-    public ResponseEntity<CustomErrorResponse> handleJsonParserException(Exception exception,
-            HttpServletRequest request) {
+                        HttpRequestMethodNotSupportedException.class
+                      })
+    public ResponseEntity<CustomErrorResponse> handleJsonParserException(
+        Exception exception,
+        HttpServletRequest request) {
         LOGGER.error("Request: {}, exception: {}", getRequestData(request), exception);
 
         CustomErrorResponse error = new CustomErrorResponse();
@@ -40,7 +44,8 @@ public class HTTPExceptionsController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<CustomErrorResponse> handleOthers(Exception exception, HttpServletRequest request) {
+    public ResponseEntity<CustomErrorResponse> handleOthers(Exception exception,
+            HttpServletRequest request) {
         LOGGER.error("Request: {}, exception: {}", getRequestData(request), exception);
 
         CustomErrorResponse error = new CustomErrorResponse();
@@ -51,7 +56,7 @@ public class HTTPExceptionsController {
     private String getRequestData(HttpServletRequest request) {
         try {
             return request.getReader().lines().collect(Collectors.joining());
-        } catch (Exception ex) {
+        } catch(Exception ex) {
             return "[request not available]";
         }
     }

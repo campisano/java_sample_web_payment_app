@@ -7,7 +7,8 @@ public class AccountTest {
 
     @Test
     public void test_creation() throws Exception {
-        Account account = new Account(Long.valueOf(1), "document_number", new Money(5000));
+        Account account = new Account(Long.valueOf(1), "document_number",
+                                      new Money(5000));
 
         Assertions.assertEquals(Long.valueOf(1), account.getAccountId());
         Assertions.assertEquals("document_number", account.getDocumentNumber());
@@ -50,7 +51,8 @@ public class AccountTest {
 
     @Test
     public void test_operate_still_positive() throws Exception {
-        Account account = new Account(Long.valueOf(1), "document_number", new Money(100));
+        Account account = new Account(Long.valueOf(1), "document_number",
+                                      new Money(100));
 
         account.operate(new Money(10));
 
@@ -59,7 +61,8 @@ public class AccountTest {
 
     @Test
     public void test_operate_negative() throws Exception {
-        Account account = new Account(Long.valueOf(1), "document_number", new Money(100));
+        Account account = new Account(Long.valueOf(1), "document_number",
+                                      new Money(100));
 
         account.operate(new Money(-10));
 

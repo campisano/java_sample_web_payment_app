@@ -2,7 +2,8 @@ package org.example.java_sample_web_payment_app.IT;
 
 import org.testcontainers.containers.PostgreSQLContainer;
 
-public class CustomPostgresqlContainer extends PostgreSQLContainer<CustomPostgresqlContainer> {
+public class CustomPostgresqlContainer extends
+    PostgreSQLContainer<CustomPostgresqlContainer> {
 
     private static CustomPostgresqlContainer container;
 
@@ -11,7 +12,7 @@ public class CustomPostgresqlContainer extends PostgreSQLContainer<CustomPostgre
     }
 
     public static CustomPostgresqlContainer getInstance() {
-        if (container == null) {
+        if(container == null) {
             container = new CustomPostgresqlContainer();
         }
         return container;

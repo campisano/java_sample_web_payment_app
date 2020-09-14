@@ -30,7 +30,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class HTTPAccountControllerIntegationTest {
 
     @Container
-    public static final PostgreSQLContainer<?> postgresContainer = CustomPostgresqlContainer.getInstance();
+    public static final PostgreSQLContainer<?> postgresContainer =
+        CustomPostgresqlContainer.getInstance();
 
     @Autowired
     private TestRestTemplate rest;
@@ -67,7 +68,8 @@ public class HTTPAccountControllerIntegationTest {
 
     @Test
     public void test_post_empty() throws Exception {
-        ResponseEntity<?> response = rest.postForEntity("/accounts", Optional.empty(), null);
+        ResponseEntity<?> response = rest.postForEntity("/accounts", Optional.empty(),
+                                     null);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
@@ -82,8 +84,9 @@ public class HTTPAccountControllerIntegationTest {
             }
         }, null);
 
-        ResponseEntity<HTTPAccountsGetResponse> response = rest.getForEntity("/accounts/{accountId}",
-                HTTPAccountsGetResponse.class, existingAccountId);
+        ResponseEntity<HTTPAccountsGetResponse> response =
+            rest.getForEntity("/accounts/{accountId}",
+                              HTTPAccountsGetResponse.class, existingAccountId);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
         Assertions.assertEquals(existingAccountId, response.getBody().accountId);
@@ -95,8 +98,9 @@ public class HTTPAccountControllerIntegationTest {
     public void test_get_not_exists() throws Exception {
         Long existingAccountId = Long.valueOf(1);
 
-        ResponseEntity<HTTPAccountsGetResponse> response = rest.getForEntity("/accounts/{accountId}",
-                HTTPAccountsGetResponse.class, existingAccountId);
+        ResponseEntity<HTTPAccountsGetResponse> response =
+            rest.getForEntity("/accounts/{accountId}",
+                              HTTPAccountsGetResponse.class, existingAccountId);
 
         Assertions.assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         Assertions.assertFalse(response.hasBody());
