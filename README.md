@@ -5,15 +5,42 @@
 
 # Java Sample WEB Payment App
 
-Clean Architecture / Hexagonal Java example project using REST and persistence
+This is a Java 14 / SpringBoot sample REST project developed following [Test-Driven Development](https://en.wikipedia.org/wiki/Test-driven_development) in an [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) / [Hexagonal](https://web.archive.org/web/20180822100852/http://alistair.cockburn.us/Hexagonal+architecture) style.
 
 &nbsp;
 &nbsp;
 
-Minimum Requirements
---------------------
+Project structure
+-----------------
 
-* Java 11 and Maven 3 are required to build and run the application.
+The project is structured in the following folders:
+
+```
+root
+├── ci/                         (continuous integration files)
+├── docs/                       (docs files)
+├── scripts/                    (utility scripts to test REST requests)
+├── src/                        (source files)
+│   ├── main/*/                     (breath of fantasy source files)
+│   │   ├── adapters/                   (adapters with framework/infra stuffs)
+│   │   ├── application/                (application logic)
+│   │   ├── domain/                     (business classes)
+│   │   └── Application.java            (main source file)
+│   │
+│   └── test/                       (test files)
+│
+├── targets/                    (compiled files)
+├── Makefile                    (make file used to simplify build process)
+└── pom.xml                     (maven file defining build directives)
+```
+
+&nbsp;
+&nbsp;
+
+Minimum System Requirements
+---------------------------
+
+* Java 14 and Maven 3 are required to build and run the application.
 
 * Docker and DockerCompose can be used to provide a Postgresql database instance that is required to run the project.
 
@@ -24,8 +51,8 @@ Minimum Requirements
 &nbsp;
 &nbsp;
 
-Run the application
--------------------
+Build and Run
+-------------
 
 You can execute `docker-compose up -d` to setup a database instance and `mvn spring-boot:run` to run the application.
 
@@ -43,8 +70,8 @@ The following commands can be used to test the application locally:
 &nbsp;
 &nbsp;
 
-Business rules
---------------
+Business rules used for TDD
+---------------------------
 
 * An Account contains the client identification and define a credit limit.
 * An Account credit limit increase and decrease for each transaction beeing made.
